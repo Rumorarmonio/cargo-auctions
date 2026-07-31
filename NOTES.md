@@ -19,6 +19,7 @@ SPA для работы с грузовыми аукционами по OpenAPI-
 - UI-kit: Mantine.
 - Собственные стили и layout: SCSS Modules; глобальные variables/mixins/functions подключаются через Vite/Sass architecture.
 - API-типы, клиент и TanStack Query hooks: Orval из OpenAPI JSON.
+- Для `POST /auctions/list`, который Orval генерирует как mutation, используется ручной TanStack Query wrapper с query key по параметрам списка.
 - Роутинг: TanStack Router.
 - Серверное состояние: TanStack Query.
 - Клиентский UI-state: Zustand.
@@ -34,12 +35,13 @@ SPA для работы с грузовыми аукционами по OpenAPI-
 - Проанализирован PDF и OpenAPI-контракт.
 - Создан `SPEC.md` с требованиями, решениями и открытыми вопросами.
 - Зафиксировано, что готовые fixtures от HR пока не получены.
+- Выполнен bootstrap React/Vite/TypeScript, базовые providers, SCSS Modules, Zustand, FSD-каталоги и Orval-generated API-код.
 
 ## Текущие проблемы / открытые вопросы
 
-- Нужно дождаться ответа HR о наличии fixtures и примеров JSON-ответов.
+- Ответ HR о fixtures остаётся внешним открытым вопросом и не блокирует bootstrap.
 - Если fixtures не будет, нужно создать seed-данные с edge cases самостоятельно.
 
 ## Следующий шаг
 
-Уточнить у HR наличие fixtures, затем bootstrap’нуть React/Vite-проект и настроить базовую архитектуру.
+Добавить fixtures, MSW-store и handlers для четырёх API endpoint’ов; fixtures уточнить до или во время реализации mock-слоя.

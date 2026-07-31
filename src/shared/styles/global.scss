@@ -1,0 +1,7 @@
+@use './variables' as *;
+
+:root { color: #1a1b1e; background: $color-background; }
+
+* { box-sizing: border-box; }
+
+body { margin: 0; min-width: 320px; }
