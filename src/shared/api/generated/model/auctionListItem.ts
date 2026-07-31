@@ -5,21 +5,21 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import type { AuctionListItemCargo } from './auctionListItemCargo';
-import type { AuctionListItemMain } from './auctionListItemMain';
-import type { AuctionListItemOrganizer } from './auctionListItemOrganizer';
-import type { AuctionListItemPayment } from './auctionListItemPayment';
-import type { AuctionListItemRoute } from './auctionListItemRoute';
-import type { AuctionListItemTrading } from './auctionListItemTrading';
+import type { AuctionListItemCargo } from './auctionListItemCargo'
+import type { AuctionListItemMain } from './auctionListItemMain'
+import type { AuctionListItemOrganizer } from './auctionListItemOrganizer'
+import type { AuctionListItemPayment } from './auctionListItemPayment'
+import type { AuctionListItemRoute } from './auctionListItemRoute'
+import type { AuctionListItemTrading } from './auctionListItemTrading'
 
 /**
  * Главный Data-объект списка аукционов.
  */
 export interface AuctionListItem {
-  main?: AuctionListItemMain;
-  organizer?: AuctionListItemOrganizer;
-  route?: AuctionListItemRoute;
-  cargo?: AuctionListItemCargo;
-  trading?: AuctionListItemTrading;
-  payment?: AuctionListItemPayment;
+  main?: AuctionListItemMain
+  organizer?: AuctionListItemOrganizer
+  route?: AuctionListItemRoute
+  cargo?: AuctionListItemCargo
+  trading?: AuctionListItemTrading
+  payment?: AuctionListItemPayment
 }

@@ -5,10 +5,7 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import {
-  useMutation,
-  useQuery
-} from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query'
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -21,8 +18,8 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult
-} from '@tanstack/react-query';
+  UseQueryResult,
+} from '@tanstack/react-query'
 
 import type {
   AuctionListRequest,
@@ -34,27 +31,23 @@ import type {
   ServiceUnavailableResponse,
   SetBetRequest,
   UnauthorizedResponse,
-  ValidationFailedResponse
-} from '../model';
-
-
-
-
+  ValidationFailedResponse,
+} from '../model'
 
 const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKey: K } => {
-  const result = { queryKey } as T & { queryKey: K };
+  const result = { queryKey } as T & { queryKey: K }
   for (const key of Object.keys(query)) {
     // The explicit queryKey always wins, matching the previous
     // `{ ...query, queryKey }` spread where it was set last.
-    if (key === 'queryKey') continue;
+    if (key === 'queryKey') continue
     Object.defineProperty(result, key, {
       enumerable: true,
       configurable: true,
       get: () => (query as Record<string, unknown>)[key],
-    });
+    })
   }
-  return result;
-};
+  return result
+}
 
 export type listAuctionsResponse200 = {
   data: AuctionListResponseBase
@@ -76,20 +69,18 @@ export type listAuctionsResponse503 = {
   status: 503
 }
 
-export type listAuctionsResponseSuccess = (listAuctionsResponse200) & {
-  headers: Headers;
-};
-export type listAuctionsResponseError = (listAuctionsResponse401 | listAuctionsResponse422 | listAuctionsResponse503) & {
-  headers: Headers;
-};
+export type listAuctionsResponseSuccess = listAuctionsResponse200 & {
+  headers: Headers
+}
+export type listAuctionsResponseError = (
+  listAuctionsResponse401 | listAuctionsResponse422 | listAuctionsResponse503
+) & {
+  headers: Headers
+}
 
-export type listAuctionsResponse = (listAuctionsResponseSuccess | listAuctionsResponseError)
+export type listAuctionsResponse = listAuctionsResponseSuccess | listAuctionsResponseError
 
 export const getListAuctionsUrl = () => {
-
-
-
-
   return `/auctions/list`
 }
 
@@ -97,73 +88,90 @@ export const getListAuctionsUrl = () => {
  * Получение списка аукционов с заданными фильтрами
  * @summary Список аукционов
  */
-export const listAuctions = async (auctionListRequest?: AuctionListRequest, options?: RequestInit): Promise<listAuctionsResponse> => {
-
-  const res = await fetch(getListAuctionsUrl(),
-  {
+export const listAuctions = async (
+  auctionListRequest?: AuctionListRequest,
+  options?: RequestInit,
+): Promise<listAuctionsResponse> => {
+  const res = await fetch(getListAuctionsUrl(), {
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(auctionListRequest)
-  }
-)
+    body: JSON.stringify(auctionListRequest),
+  })
 
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text()
 
   const data: listAuctionsResponse['data'] = body ? JSON.parse(body) : {}
   return { data, status: res.status, headers: res.headers } as listAuctionsResponse
 }
 
+export const getListAuctionsMutationOptions = <
+  TError = UnauthorizedResponse | ValidationFailedResponse | ServiceUnavailableResponse,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof listAuctions>>,
+    TError,
+    { data?: AuctionListRequest },
+    TContext
+  >
+  fetch?: RequestInit
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof listAuctions>>,
+  TError,
+  { data?: AuctionListRequest },
+  TContext
+> => {
+  const mutationKey = ['listAuctions']
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, fetch: undefined }
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof listAuctions>>,
+    { data?: AuctionListRequest }
+  > = (props) => {
+    const { data } = props ?? {}
 
+    return listAuctions(data, fetchOptions)
+  }
 
+  return { mutationFn, ...mutationOptions }
+}
 
-export const getListAuctionsMutationOptions = <TError = UnauthorizedResponse | ValidationFailedResponse | ServiceUnavailableResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof listAuctions>>, TError,{data?: AuctionListRequest}, TContext>, fetch?: RequestInit}
-): UseMutationOptions<Awaited<ReturnType<typeof listAuctions>>, TError,{data?: AuctionListRequest}, TContext> => {
+export type ListAuctionsMutationResult = NonNullable<Awaited<ReturnType<typeof listAuctions>>>
+export type ListAuctionsMutationBody = AuctionListRequest | undefined
+export type ListAuctionsMutationError =
+  UnauthorizedResponse | ValidationFailedResponse | ServiceUnavailableResponse
 
-const mutationKey = ['listAuctions'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
-
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof listAuctions>>, {data?: AuctionListRequest}> = (props) => {
-          const {data} = props ?? {};
-
-          return  listAuctions(data,fetchOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ListAuctionsMutationResult = NonNullable<Awaited<ReturnType<typeof listAuctions>>>
-    export type ListAuctionsMutationBody = AuctionListRequest | undefined
-    export type ListAuctionsMutationError = UnauthorizedResponse | ValidationFailedResponse | ServiceUnavailableResponse
-
-    /**
+/**
  * @summary Список аукционов
  */
-export const useListAuctions = <TError = UnauthorizedResponse | ValidationFailedResponse | ServiceUnavailableResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof listAuctions>>, TError,{data?: AuctionListRequest}, TContext>, fetch?: RequestInit}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof listAuctions>>,
-        TError,
-        {data?: AuctionListRequest},
-        TContext
-      > => {
-      return useMutation(getListAuctionsMutationOptions(options), queryClient);
-    }
-    export type getAuctionResponse200 = {
+export const useListAuctions = <
+  TError = UnauthorizedResponse | ValidationFailedResponse | ServiceUnavailableResponse,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof listAuctions>>,
+      TError,
+      { data?: AuctionListRequest },
+      TContext
+    >
+    fetch?: RequestInit
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof listAuctions>>,
+  TError,
+  { data?: AuctionListRequest },
+  TContext
+> => {
+  return useMutation(getListAuctionsMutationOptions(options), queryClient)
+}
+export type getAuctionResponse200 = {
   data: AuctionShowResponse
   status: 200
 }
@@ -183,20 +191,18 @@ export type getAuctionResponse503 = {
   status: 503
 }
 
-export type getAuctionResponseSuccess = (getAuctionResponse200) & {
-  headers: Headers;
-};
-export type getAuctionResponseError = (getAuctionResponse401 | getAuctionResponse404 | getAuctionResponse503) & {
-  headers: Headers;
-};
+export type getAuctionResponseSuccess = getAuctionResponse200 & {
+  headers: Headers
+}
+export type getAuctionResponseError = (
+  getAuctionResponse401 | getAuctionResponse404 | getAuctionResponse503
+) & {
+  headers: Headers
+}
 
-export type getAuctionResponse = (getAuctionResponseSuccess | getAuctionResponseError)
+export type getAuctionResponse = getAuctionResponseSuccess | getAuctionResponseError
 
-export const getGetAuctionUrl = (auctionUuid: string,) => {
-
-
-
-
+export const getGetAuctionUrl = (auctionUuid: string) => {
   return `/auctions/${auctionUuid}`
 }
 
@@ -204,101 +210,128 @@ export const getGetAuctionUrl = (auctionUuid: string,) => {
  * Получение подробных данных аукциона
  * @summary Данные аукциона
  */
-export const getAuction = async (auctionUuid: string, options?: RequestInit): Promise<getAuctionResponse> => {
-
-  const res = await fetch(getGetAuctionUrl(auctionUuid),
-  {
+export const getAuction = async (
+  auctionUuid: string,
+  options?: RequestInit,
+): Promise<getAuctionResponse> => {
+  const res = await fetch(getGetAuctionUrl(auctionUuid), {
     ...options,
-    method: 'GET'
+    method: 'GET',
+  })
 
-
-  }
-)
-
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text()
 
   const data: getAuctionResponse['data'] = body ? JSON.parse(body) : {}
   return { data, status: res.status, headers: res.headers } as getAuctionResponse
 }
 
+export const getGetAuctionQueryKey = (auctionUuid: string) => {
+  return [`/auctions/${auctionUuid}`] as const
+}
 
-
-
-
-export const getGetAuctionQueryKey = (auctionUuid: string,) => {
-    return [
-    `/auctions/${auctionUuid}`
-    ] as const;
-    }
-
-
-export const getGetAuctionQueryOptions = <TData = Awaited<ReturnType<typeof getAuction>>, TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse>(auctionUuid: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuction>>, TError, TData>>, fetch?: RequestInit}
+export const getGetAuctionQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAuction>>,
+  TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse,
+>(
+  auctionUuid: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuction>>, TError, TData>>
+    fetch?: RequestInit
+  },
 ) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {}
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetAuctionQueryKey(auctionUuid)
 
-  const queryKey =  queryOptions?.queryKey ?? getGetAuctionQueryKey(auctionUuid);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAuction>>> = ({ signal }) =>
+    getAuction(auctionUuid, { signal, ...fetchOptions })
 
-
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAuction>>> = ({ signal }) => getAuction(auctionUuid, { signal, ...fetchOptions });
-
-
-
-
-
-   return  { queryKey, queryFn, enabled: auctionUuid !== null && auctionUuid !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAuction>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+  return {
+    queryKey,
+    queryFn,
+    enabled: auctionUuid !== null && auctionUuid !== undefined,
+    ...queryOptions,
+  } as UseQueryOptions<Awaited<ReturnType<typeof getAuction>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
 }
 
 export type GetAuctionQueryResult = NonNullable<Awaited<ReturnType<typeof getAuction>>>
-export type GetAuctionQueryError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse
+export type GetAuctionQueryError =
+  UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse
 
-
-export function useGetAuction<TData = Awaited<ReturnType<typeof getAuction>>, TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse>(
- auctionUuid: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuction>>, TError, TData>> & Pick<
+export function useGetAuction<
+  TData = Awaited<ReturnType<typeof getAuction>>,
+  TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse,
+>(
+  auctionUuid: string,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuction>>, TError, TData>> &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getAuction>>,
           TError,
           Awaited<ReturnType<typeof getAuction>>
-        > , 'initialData'
-      >, fetch?: RequestInit}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetAuction<TData = Awaited<ReturnType<typeof getAuction>>, TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse>(
- auctionUuid: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuction>>, TError, TData>> & Pick<
+        >,
+        'initialData'
+      >
+    fetch?: RequestInit
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAuction<
+  TData = Awaited<ReturnType<typeof getAuction>>,
+  TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse,
+>(
+  auctionUuid: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuction>>, TError, TData>> &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getAuction>>,
           TError,
           Awaited<ReturnType<typeof getAuction>>
-        > , 'initialData'
-      >, fetch?: RequestInit}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetAuction<TData = Awaited<ReturnType<typeof getAuction>>, TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse>(
- auctionUuid: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuction>>, TError, TData>>, fetch?: RequestInit}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        'initialData'
+      >
+    fetch?: RequestInit
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAuction<
+  TData = Awaited<ReturnType<typeof getAuction>>,
+  TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse,
+>(
+  auctionUuid: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuction>>, TError, TData>>
+    fetch?: RequestInit
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Данные аукциона
  */
 
-export function useGetAuction<TData = Awaited<ReturnType<typeof getAuction>>, TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse>(
- auctionUuid: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuction>>, TError, TData>>, fetch?: RequestInit}
- , queryClient?: QueryClient
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useGetAuction<
+  TData = Awaited<ReturnType<typeof getAuction>>,
+  TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse,
+>(
+  auctionUuid: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuction>>, TError, TData>>
+    fetch?: RequestInit
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetAuctionQueryOptions(auctionUuid, options)
 
-  const queryOptions = getGetAuctionQueryOptions(auctionUuid,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
 
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  return withQueryKey(query, queryOptions.queryKey);
+  return withQueryKey(query, queryOptions.queryKey)
 }
-
-
-
-
-
 
 export type listBetsResponse200 = {
   data: BetListResponse
@@ -320,137 +353,165 @@ export type listBetsResponse503 = {
   status: 503
 }
 
-export type listBetsResponseSuccess = (listBetsResponse200) & {
-  headers: Headers;
-};
-export type listBetsResponseError = (listBetsResponse401 | listBetsResponse404 | listBetsResponse503) & {
-  headers: Headers;
-};
+export type listBetsResponseSuccess = listBetsResponse200 & {
+  headers: Headers
+}
+export type listBetsResponseError = (
+  listBetsResponse401 | listBetsResponse404 | listBetsResponse503
+) & {
+  headers: Headers
+}
 
-export type listBetsResponse = (listBetsResponseSuccess | listBetsResponseError)
+export type listBetsResponse = listBetsResponseSuccess | listBetsResponseError
 
-export const getListBetsUrl = (auctionUuid: string,
-    params?: ListBetsParams,) => {
-  const normalizedParams = new URLSearchParams();
+export const getListBetsUrl = (auctionUuid: string, params?: ListBetsParams) => {
+  const normalizedParams = new URLSearchParams()
 
   Object.entries(params || {}).forEach(([key, value]) => {
-
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? 'null' : String(value))
     }
-  });
+  })
 
-  const stringifiedParams = normalizedParams.toString();
+  const stringifiedParams = normalizedParams.toString()
 
-  return stringifiedParams.length > 0 ? `/auctions/${auctionUuid}/bets?${stringifiedParams}` : `/auctions/${auctionUuid}/bets`
+  return stringifiedParams.length > 0
+    ? `/auctions/${auctionUuid}/bets?${stringifiedParams}`
+    : `/auctions/${auctionUuid}/bets`
 }
 
 /**
  * Запрос вернет список ставок, которые были сделаны в этом аукционе
  * @summary Список ставок аукциона
  */
-export const listBets = async (auctionUuid: string,
-    params?: ListBetsParams, options?: RequestInit): Promise<listBetsResponse> => {
-
-  const res = await fetch(getListBetsUrl(auctionUuid,params),
-  {
+export const listBets = async (
+  auctionUuid: string,
+  params?: ListBetsParams,
+  options?: RequestInit,
+): Promise<listBetsResponse> => {
+  const res = await fetch(getListBetsUrl(auctionUuid, params), {
     ...options,
-    method: 'GET'
+    method: 'GET',
+  })
 
-
-  }
-)
-
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text()
 
   const data: listBetsResponse['data'] = body ? JSON.parse(body) : {}
   return { data, status: res.status, headers: res.headers } as listBetsResponse
 }
 
+export const getListBetsQueryKey = (auctionUuid: string, params?: ListBetsParams) => {
+  return [`/auctions/${auctionUuid}/bets`, ...(params ? [params] : [])] as const
+}
 
-
-
-
-export const getListBetsQueryKey = (auctionUuid: string,
-    params?: ListBetsParams,) => {
-    return [
-    `/auctions/${auctionUuid}/bets`, ...(params ? [params] : [])
-    ] as const;
-    }
-
-
-export const getListBetsQueryOptions = <TData = Awaited<ReturnType<typeof listBets>>, TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse>(auctionUuid: string,
-    params?: ListBetsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listBets>>, TError, TData>>, fetch?: RequestInit}
+export const getListBetsQueryOptions = <
+  TData = Awaited<ReturnType<typeof listBets>>,
+  TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse,
+>(
+  auctionUuid: string,
+  params?: ListBetsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listBets>>, TError, TData>>
+    fetch?: RequestInit
+  },
 ) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {}
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getListBetsQueryKey(auctionUuid, params)
 
-  const queryKey =  queryOptions?.queryKey ?? getListBetsQueryKey(auctionUuid,params);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listBets>>> = ({ signal }) =>
+    listBets(auctionUuid, params, { signal, ...fetchOptions })
 
-
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof listBets>>> = ({ signal }) => listBets(auctionUuid,params, { signal, ...fetchOptions });
-
-
-
-
-
-   return  { queryKey, queryFn, enabled: auctionUuid !== null && auctionUuid !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listBets>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+  return {
+    queryKey,
+    queryFn,
+    enabled: auctionUuid !== null && auctionUuid !== undefined,
+    ...queryOptions,
+  } as UseQueryOptions<Awaited<ReturnType<typeof listBets>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
 }
 
 export type ListBetsQueryResult = NonNullable<Awaited<ReturnType<typeof listBets>>>
-export type ListBetsQueryError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse
+export type ListBetsQueryError =
+  UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse
 
-
-export function useListBets<TData = Awaited<ReturnType<typeof listBets>>, TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse>(
- auctionUuid: string,
-    params: undefined |  ListBetsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listBets>>, TError, TData>> & Pick<
+export function useListBets<
+  TData = Awaited<ReturnType<typeof listBets>>,
+  TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse,
+>(
+  auctionUuid: string,
+  params: undefined | ListBetsParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof listBets>>, TError, TData>> &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof listBets>>,
           TError,
           Awaited<ReturnType<typeof listBets>>
-        > , 'initialData'
-      >, fetch?: RequestInit}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useListBets<TData = Awaited<ReturnType<typeof listBets>>, TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse>(
- auctionUuid: string,
-    params?: ListBetsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listBets>>, TError, TData>> & Pick<
+        >,
+        'initialData'
+      >
+    fetch?: RequestInit
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListBets<
+  TData = Awaited<ReturnType<typeof listBets>>,
+  TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse,
+>(
+  auctionUuid: string,
+  params?: ListBetsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listBets>>, TError, TData>> &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof listBets>>,
           TError,
           Awaited<ReturnType<typeof listBets>>
-        > , 'initialData'
-      >, fetch?: RequestInit}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useListBets<TData = Awaited<ReturnType<typeof listBets>>, TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse>(
- auctionUuid: string,
-    params?: ListBetsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listBets>>, TError, TData>>, fetch?: RequestInit}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        'initialData'
+      >
+    fetch?: RequestInit
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListBets<
+  TData = Awaited<ReturnType<typeof listBets>>,
+  TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse,
+>(
+  auctionUuid: string,
+  params?: ListBetsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listBets>>, TError, TData>>
+    fetch?: RequestInit
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Список ставок аукциона
  */
 
-export function useListBets<TData = Awaited<ReturnType<typeof listBets>>, TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse>(
- auctionUuid: string,
-    params?: ListBetsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listBets>>, TError, TData>>, fetch?: RequestInit}
- , queryClient?: QueryClient
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useListBets<
+  TData = Awaited<ReturnType<typeof listBets>>,
+  TError = UnauthorizedResponse | NotFoundResponse | ServiceUnavailableResponse,
+>(
+  auctionUuid: string,
+  params?: ListBetsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listBets>>, TError, TData>>
+    fetch?: RequestInit
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getListBetsQueryOptions(auctionUuid, params, options)
 
-  const queryOptions = getListBetsQueryOptions(auctionUuid,params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
 
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  return withQueryKey(query, queryOptions.queryKey);
+  return withQueryKey(query, queryOptions.queryKey)
 }
-
-
-
-
-
 
 export type setBetResponse200 = {
   data: void
@@ -477,20 +538,18 @@ export type setBetResponse503 = {
   status: 503
 }
 
-export type setBetResponseSuccess = (setBetResponse200) & {
-  headers: Headers;
-};
-export type setBetResponseError = (setBetResponse401 | setBetResponse404 | setBetResponse422 | setBetResponse503) & {
-  headers: Headers;
-};
+export type setBetResponseSuccess = setBetResponse200 & {
+  headers: Headers
+}
+export type setBetResponseError = (
+  setBetResponse401 | setBetResponse404 | setBetResponse422 | setBetResponse503
+) & {
+  headers: Headers
+}
 
-export type setBetResponse = (setBetResponseSuccess | setBetResponseError)
+export type setBetResponse = setBetResponseSuccess | setBetResponseError
 
-export const getSetBetUrl = (auctionUuid: string,) => {
-
-
-
-
+export const getSetBetUrl = (auctionUuid: string) => {
   return `/auctions/${auctionUuid}/bets`
 }
 
@@ -498,70 +557,89 @@ export const getSetBetUrl = (auctionUuid: string,) => {
  * Установить ставку в аукционе
  * @summary Установить ставку
  */
-export const setBet = async (auctionUuid: string,
-    setBetRequest: SetBetRequest, options?: RequestInit): Promise<setBetResponse> => {
-
-  const res = await fetch(getSetBetUrl(auctionUuid),
-  {
+export const setBet = async (
+  auctionUuid: string,
+  setBetRequest: SetBetRequest,
+  options?: RequestInit,
+): Promise<setBetResponse> => {
+  const res = await fetch(getSetBetUrl(auctionUuid), {
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(setBetRequest)
-  }
-)
+    body: JSON.stringify(setBetRequest),
+  })
 
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text()
 
   const data: setBetResponse['data'] = body ? JSON.parse(body) : undefined
   return { data, status: res.status, headers: res.headers } as setBetResponse
 }
 
+export const getSetBetMutationOptions = <
+  TError =
+    UnauthorizedResponse | NotFoundResponse | ValidationFailedResponse | ServiceUnavailableResponse,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof setBet>>,
+    TError,
+    { auctionUuid: string; data: SetBetRequest },
+    TContext
+  >
+  fetch?: RequestInit
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof setBet>>,
+  TError,
+  { auctionUuid: string; data: SetBetRequest },
+  TContext
+> => {
+  const mutationKey = ['setBet']
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, fetch: undefined }
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof setBet>>,
+    { auctionUuid: string; data: SetBetRequest }
+  > = (props) => {
+    const { auctionUuid, data } = props ?? {}
 
+    return setBet(auctionUuid, data, fetchOptions)
+  }
 
+  return { mutationFn, ...mutationOptions }
+}
 
-export const getSetBetMutationOptions = <TError = UnauthorizedResponse | NotFoundResponse | ValidationFailedResponse | ServiceUnavailableResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof setBet>>, TError,{auctionUuid: string;data: SetBetRequest}, TContext>, fetch?: RequestInit}
-): UseMutationOptions<Awaited<ReturnType<typeof setBet>>, TError,{auctionUuid: string;data: SetBetRequest}, TContext> => {
+export type SetBetMutationResult = NonNullable<Awaited<ReturnType<typeof setBet>>>
+export type SetBetMutationBody = SetBetRequest
+export type SetBetMutationError =
+  UnauthorizedResponse | NotFoundResponse | ValidationFailedResponse | ServiceUnavailableResponse
 
-const mutationKey = ['setBet'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
-
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof setBet>>, {auctionUuid: string;data: SetBetRequest}> = (props) => {
-          const {auctionUuid,data} = props ?? {};
-
-          return  setBet(auctionUuid,data,fetchOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type SetBetMutationResult = NonNullable<Awaited<ReturnType<typeof setBet>>>
-    export type SetBetMutationBody = SetBetRequest
-    export type SetBetMutationError = UnauthorizedResponse | NotFoundResponse | ValidationFailedResponse | ServiceUnavailableResponse
-
-    /**
+/**
  * @summary Установить ставку
  */
-export const useSetBet = <TError = UnauthorizedResponse | NotFoundResponse | ValidationFailedResponse | ServiceUnavailableResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof setBet>>, TError,{auctionUuid: string;data: SetBetRequest}, TContext>, fetch?: RequestInit}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof setBet>>,
-        TError,
-        {auctionUuid: string;data: SetBetRequest},
-        TContext
-      > => {
-      return useMutation(getSetBetMutationOptions(options), queryClient);
-    }
+export const useSetBet = <
+  TError =
+    UnauthorizedResponse | NotFoundResponse | ValidationFailedResponse | ServiceUnavailableResponse,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof setBet>>,
+      TError,
+      { auctionUuid: string; data: SetBetRequest },
+      TContext
+    >
+    fetch?: RequestInit
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof setBet>>,
+  TError,
+  { auctionUuid: string; data: SetBetRequest },
+  TContext
+> => {
+  return useMutation(getSetBetMutationOptions(options), queryClient)
+}

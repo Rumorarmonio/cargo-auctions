@@ -5,22 +5,22 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import type { PaymentDelayType } from './paymentDelayType';
+import type { PaymentDelayType } from './paymentDelayType'
 
 export interface AuctionShowPayment {
   /** @nullable */
-  condition?: string | null;
+  condition?: string | null
   /** @nullable */
-  condition_predefined?: string | null;
-  form?: string;
+  condition_predefined?: string | null
+  form?: string
   /**
-     * Отсрочка платежа
-     * @nullable
-     */
-  delay?: number | null;
-  delay_type?: PaymentDelayType | null;
+   * Отсрочка платежа
+   * @nullable
+   */
+  delay?: number | null
+  delay_type?: PaymentDelayType | null
   /** Код валюты (ISO 4217 numeric) */
-  currency_code?: string;
+  currency_code?: string
   /** @nullable */
-  prepay?: string | null;
+  prepay?: string | null
 }

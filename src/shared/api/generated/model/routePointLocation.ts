@@ -7,10 +7,10 @@
  */
 
 export interface RoutePointLocation {
-  city_name?: string;
-  city_full_name?: string;
-  city_gc_id?: number;
-  loading_address?: string;
-  lon?: number;
-  lat?: number;
+  city_name?: string
+  city_full_name?: string
+  city_gc_id?: number
+  loading_address?: string
+  lon?: number
+  lat?: number
 }

@@ -7,23 +7,23 @@
  */
 
 export interface AdmittedOrganization {
-  id?: number;
-  inn?: string;
-  is_main?: boolean;
-  name?: string;
-  full_name?: string;
+  id?: number
+  inn?: string
+  is_main?: boolean
+  name?: string
+  full_name?: string
   /** @nullable */
-  site?: string | null;
-  subscriber_id?: number;
-  subscriber_code?: string;
+  site?: string | null
+  subscriber_id?: number
+  subscriber_code?: string
   /** @nullable */
-  subscriber_role?: string | null;
-  infobase_code?: string;
+  subscriber_role?: string | null
+  infobase_code?: string
   /** @nullable */
-  infobase_address?: string | null;
+  infobase_address?: string | null
   /** @nullable */
-  nalog_key?: string | null;
-  hide_me?: boolean;
+  nalog_key?: string | null
+  hide_me?: boolean
   /** @nullable */
-  current_vat_rate?: string | null;
+  current_vat_rate?: string | null
 }

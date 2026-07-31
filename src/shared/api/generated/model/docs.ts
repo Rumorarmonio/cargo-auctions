@@ -7,8 +7,8 @@
  */
 
 export interface Docs {
-  tir?: boolean;
-  cmr?: boolean;
-  t1?: boolean;
-  med?: boolean;
+  tir?: boolean
+  cmr?: boolean
+  t1?: boolean
+  med?: boolean
 }

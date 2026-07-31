@@ -5,27 +5,27 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import type { AdmittedOrganization } from './admittedOrganization';
-import type { Assembly } from './assembly';
-import type { AuctionShowCargo } from './auctionShowCargo';
-import type { AuctionShowMain } from './auctionShowMain';
-import type { AuctionShowOrganizer } from './auctionShowOrganizer';
-import type { AuctionShowPayment } from './auctionShowPayment';
-import type { AuctionShowTrading } from './auctionShowTrading';
-import type { Contact } from './contact';
-import type { RoutePoint } from './routePoint';
+import type { AdmittedOrganization } from './admittedOrganization'
+import type { Assembly } from './assembly'
+import type { AuctionShowCargo } from './auctionShowCargo'
+import type { AuctionShowMain } from './auctionShowMain'
+import type { AuctionShowOrganizer } from './auctionShowOrganizer'
+import type { AuctionShowPayment } from './auctionShowPayment'
+import type { AuctionShowTrading } from './auctionShowTrading'
+import type { Contact } from './contact'
+import type { RoutePoint } from './routePoint'
 
 export interface AuctionShowResponse {
-  main: AuctionShowMain;
-  organizer: AuctionShowOrganizer;
+  main: AuctionShowMain
+  organizer: AuctionShowOrganizer
   /** Контакты организатора (пустой массив если данных нет) */
-  contacts: Contact[];
-  cargo: AuctionShowCargo;
-  trading: AuctionShowTrading;
-  payment: AuctionShowPayment;
-  assembly: Assembly;
-  routes: RoutePoint[];
+  contacts: Contact[]
+  cargo: AuctionShowCargo
+  trading: AuctionShowTrading
+  payment: AuctionShowPayment
+  assembly: Assembly
+  routes: RoutePoint[]
   /** Допущенные к торгам организации */
-  admitted_organizations: AdmittedOrganization[];
-  hide_bets_history?: boolean;
+  admitted_organizations: AdmittedOrganization[]
+  hide_bets_history?: boolean
 }

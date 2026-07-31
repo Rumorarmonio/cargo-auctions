@@ -7,6 +7,6 @@
  */
 
 export interface RoutePointContact {
-  name?: string;
-  phone?: string;
+  name?: string
+  phone?: string
 }

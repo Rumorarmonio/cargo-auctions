@@ -6,12 +6,12 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type AuctionListRequestAucTypeItem = typeof AuctionListRequestAucTypeItem[keyof typeof AuctionListRequestAucTypeItem];
-
+export type AuctionListRequestAucTypeItem =
+  (typeof AuctionListRequestAucTypeItem)[keyof typeof AuctionListRequestAucTypeItem]
 
 export const AuctionListRequestAucTypeItem = {
   Request: 'Request',
   Up: 'Up',
   Down: 'Down',
   FixPrice: 'FixPrice',
-} as const;
+} as const

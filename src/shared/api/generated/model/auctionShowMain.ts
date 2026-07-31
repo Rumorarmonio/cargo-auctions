@@ -5,13 +5,13 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import type { AuctionType } from './auctionType';
+import type { AuctionType } from './auctionType'
 
 export interface AuctionShowMain {
-  id?: number;
-  cargo_num?: string;
-  cargo_date?: string;
-  order_uid?: string;
-  auc_type?: AuctionType;
-  created_at?: string;
+  id?: number
+  cargo_num?: string
+  cargo_date?: string
+  order_uid?: string
+  auc_type?: AuctionType
+  created_at?: string
 }

@@ -7,9 +7,9 @@
  */
 
 export type ListBetsParams = {
-/**
- * Вернуть все ставки аукциона, в том числе отмененные
- * @nullable
- */
-all?: boolean | null;
-};
+  /**
+   * Вернуть все ставки аукциона, в том числе отмененные
+   * @nullable
+   */
+  all?: boolean | null
+}

@@ -8,11 +8,11 @@
 
 export interface BetItemPriceInfo {
   /** @nullable */
-  price_with_vat?: number | null;
+  price_with_vat?: number | null
   /** @nullable */
-  price_no_vat?: number | null;
+  price_no_vat?: number | null
   /** @nullable */
-  payment_type?: string | null;
+  payment_type?: string | null
   /** @nullable */
-  vat_rate?: string | null;
+  vat_rate?: string | null
 }

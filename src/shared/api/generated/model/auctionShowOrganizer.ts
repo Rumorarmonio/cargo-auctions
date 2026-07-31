@@ -7,11 +7,11 @@
  */
 
 export interface AuctionShowOrganizer {
-  subscriber_id?: number;
-  subscriber_code?: string;
-  infobase_code?: string;
-  organization_name?: string;
-  organization_inn?: string;
-  organization_kpp?: string;
-  organization_id?: number;
+  subscriber_id?: number
+  subscriber_code?: string
+  infobase_code?: string
+  organization_name?: string
+  organization_inn?: string
+  organization_kpp?: string
+  organization_id?: number
 }

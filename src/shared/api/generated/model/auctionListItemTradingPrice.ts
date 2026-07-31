@@ -7,7 +7,7 @@
  */
 
 export interface AuctionListItemTradingPrice {
-  start?: number;
-  current?: number;
-  current_no_vat?: number;
+  start?: number
+  current?: number
+  current_no_vat?: number
 }

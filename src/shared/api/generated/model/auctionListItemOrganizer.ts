@@ -10,10 +10,10 @@
  * Данные организатора.
  */
 export interface AuctionListItemOrganizer {
-  subscriber_id?: number;
-  organization_id?: number;
-  organization_name?: string;
-  organization_inn?: string;
-  organization_kpp?: string;
-  is_hide_organization?: boolean;
+  subscriber_id?: number
+  organization_id?: number
+  organization_name?: string
+  organization_inn?: string
+  organization_kpp?: string
+  is_hide_organization?: boolean
 }

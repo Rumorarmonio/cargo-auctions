@@ -15,8 +15,7 @@
  * - `Confirmed` — подтверждён (5)
  * - `Unknown` — неизвестный статус
  */
-export type TradingStatus = typeof TradingStatus[keyof typeof TradingStatus];
-
+export type TradingStatus = (typeof TradingStatus)[keyof typeof TradingStatus]
 
 export const TradingStatus = {
   NotParticipating: 'NotParticipating',
@@ -28,4 +27,4 @@ export const TradingStatus = {
   Winner: 'Winner',
   Accepted: 'Accepted',
   Unknown: 'Unknown',
-} as const;
+} as const

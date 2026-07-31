@@ -19,8 +19,8 @@
  * * **Canceled** — отменён (8)
  * * **Unknown** — неизвестный статус
  */
-export type AuctionListItemTradingStatus = typeof AuctionListItemTradingStatus[keyof typeof AuctionListItemTradingStatus];
-
+export type AuctionListItemTradingStatus =
+  (typeof AuctionListItemTradingStatus)[keyof typeof AuctionListItemTradingStatus]
 
 export const AuctionListItemTradingStatus = {
   Planning: 'Planning',
@@ -32,4 +32,4 @@ export const AuctionListItemTradingStatus = {
   Stopped: 'Stopped',
   Canceled: 'Canceled',
   Unknown: 'Unknown',
-} as const;
+} as const

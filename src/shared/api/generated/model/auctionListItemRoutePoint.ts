@@ -10,9 +10,9 @@
  * Точка маршрута (загрузка/разгрузка).
  */
 export interface AuctionListItemRoutePoint {
-  city?: string;
-  address?: string;
-  date?: string;
-  city_gc_id?: number;
-  points_count?: number;
+  city?: string
+  address?: string
+  date?: string
+  city_gc_id?: number
+  points_count?: number
 }

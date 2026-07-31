@@ -5,173 +5,173 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import type { AuctionListRequestAucTypeItem } from './auctionListRequestAucTypeItem';
-import type { AuctionListRequestSort } from './auctionListRequestSort';
-import type { AuctionListRequestStatusItem } from './auctionListRequestStatusItem';
+import type { AuctionListRequestAucTypeItem } from './auctionListRequestAucTypeItem'
+import type { AuctionListRequestSort } from './auctionListRequestSort'
+import type { AuctionListRequestStatusItem } from './auctionListRequestStatusItem'
 
 /**
  * Фильтры и параметры пагинации списка аукционов
  */
 export interface AuctionListRequest {
   /** Запрашиваемая страница */
-  page?: number;
+  page?: number
   /** Количество элементов на странице */
-  per_page?: number;
+  per_page?: number
   /** Порядок сортировки по дате: true = ASC, false / null = DESC */
-  is_oldest?: boolean;
+  is_oldest?: boolean
   /**
-     * Сортировка по полям; ключ — имя поля, значение — направление
-     * @nullable
-     */
-  sort?: AuctionListRequestSort;
+   * Сортировка по полям; ключ — имя поля, значение — направление
+   * @nullable
+   */
+  sort?: AuctionListRequestSort
   /**
-     * Фильтр по торговому статусу пользователя (строковые значения)
-     *
-     * Торговый статус пользователя в аукционе:
-     * * **NotParticipating** — не участвует (1)
-     * * **Leading** — лидирует (2)
-     * * **Losing** — перебит (3)
-     * * **Winner** — победитель (4)
-     * * **Confirmed** — подтверждён (5)
-     * * **Unknown** — неизвестный статус
-     */
-  status?: AuctionListRequestStatusItem[];
+   * Фильтр по торговому статусу пользователя (строковые значения)
+   *
+   * Торговый статус пользователя в аукционе:
+   * * **NotParticipating** — не участвует (1)
+   * * **Leading** — лидирует (2)
+   * * **Losing** — перебит (3)
+   * * **Winner** — победитель (4)
+   * * **Confirmed** — подтверждён (5)
+   * * **Unknown** — неизвестный статус
+   */
+  status?: AuctionListRequestStatusItem[]
   /** Фильтр по торговому статусу пользователя (числовые значения) */
-  mobile_statuses?: number[];
+  mobile_statuses?: number[]
   /** Фильтр по статусу аукциона (числовые значения: 1–7) */
-  statuses?: number[];
+  statuses?: number[]
   /** Номер заявки */
-  cargo_num?: string;
+  cargo_num?: string
   /** Вес груза от (т) */
-  weight_from?: number;
+  weight_from?: number
   /** Вес груза до (т) */
-  weight_to?: number;
+  weight_to?: number
   /** Объём груза от (м³) */
-  volume_from?: number;
+  volume_from?: number
   /** Объём груза до (м³) */
-  volume_to?: number;
+  volume_to?: number
   /** Фильтр по типу кузова */
-  body_types?: string[];
+  body_types?: string[]
   /**
-     * Тип формы
-     * @nullable
-     */
-  form_type?: string | null;
+   * Тип формы
+   * @nullable
+   */
+  form_type?: string | null
   /** Только международные перевозки */
-  is_international_shipment?: boolean;
+  is_international_shipment?: boolean
   /** Название города погрузки */
-  load_city?: string;
+  load_city?: string
   /** GC ID города погрузки */
-  load_gc_id?: number;
+  load_gc_id?: number
   /** Радиус поиска от города погрузки (км) */
-  load_range?: number;
+  load_range?: number
   /** Название города выгрузки */
-  unload_city?: string;
+  unload_city?: string
   /** GC ID города выгрузки */
-  unload_gc_id?: number;
+  unload_gc_id?: number
   /** Радиус поиска от города выгрузки (км) */
-  unload_range?: number;
+  unload_range?: number
   /**
-     * Дата и время погрузки от (ISO 8601 со смещением)
-     * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
-     */
-  load_date_from?: string;
+   * Дата и время погрузки от (ISO 8601 со смещением)
+   * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
+   */
+  load_date_from?: string
   /**
-     * Дата и время погрузки до (ISO 8601 со смещением)
-     * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
-     */
-  load_date_to?: string;
+   * Дата и время погрузки до (ISO 8601 со смещением)
+   * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
+   */
+  load_date_to?: string
   /**
-     * Дата выгрузки от (ISO 8601 со смещением)
-     * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
-     */
-  unload_date_from?: string;
+   * Дата выгрузки от (ISO 8601 со смещением)
+   * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
+   */
+  unload_date_from?: string
   /**
-     * Дата выгрузки до (ISO 8601 со смещением)
-     * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
-     */
-  unload_date_to?: string;
+   * Дата выгрузки до (ISO 8601 со смещением)
+   * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
+   */
+  unload_date_to?: string
   /**
-     * Дата создания аукциона от (ISO 8601 со смещением)
-     * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
-     */
-  create_date_from?: string;
+   * Дата создания аукциона от (ISO 8601 со смещением)
+   * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
+   */
+  create_date_from?: string
   /**
-     * Дата создания аукциона до (ISO 8601 со смещением)
-     * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
-     */
-  create_date_to?: string;
+   * Дата создания аукциона до (ISO 8601 со смещением)
+   * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
+   */
+  create_date_to?: string
   /**
-     * Начало торгов от (ISO 8601 со смещением)
-     * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
-     */
-  start_time_from?: string;
+   * Начало торгов от (ISO 8601 со смещением)
+   * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
+   */
+  start_time_from?: string
   /**
-     * Начало торгов до (ISO 8601 со смещением)
-     * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
-     */
-  start_time_to?: string;
+   * Начало торгов до (ISO 8601 со смещением)
+   * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
+   */
+  start_time_to?: string
   /**
-     * Окончание торгов от (ISO 8601 со смещением)
-     * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
-     */
-  stop_time_from?: string;
+   * Окончание торгов от (ISO 8601 со смещением)
+   * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
+   */
+  stop_time_from?: string
   /**
-     * Окончание торгов до (ISO 8601 со смещением)
-     * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
-     */
-  stop_time_to?: string;
+   * Окончание торгов до (ISO 8601 со смещением)
+   * @pattern ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)$
+   */
+  stop_time_to?: string
   /** Только доступные для ставки аукционы */
-  is_available?: boolean;
+  is_available?: boolean
   /** Только избранные аукционы */
-  is_favorite?: boolean;
+  is_favorite?: boolean
   /** Только аукционы, в которых пользователь участвовал */
-  is_bidder?: boolean;
+  is_bidder?: boolean
   /** Поиск по названию или ИНН заказчика */
-  customer?: string;
+  customer?: string
   /** Фильтр по ID заказчиков */
-  customer_ids?: number[];
+  customer_ids?: number[]
   /**
-     * Поиск по перевозчику
-     * @nullable
-     */
-  contractor?: string | null;
+   * Поиск по перевозчику
+   * @nullable
+   */
+  contractor?: string | null
   /** Фильтр по ID аукционов */
-  auction_ids?: number[];
+  auction_ids?: number[]
   /**
-     * Заменять внешние площадки
-     * @nullable
-     */
-  replace_external_pads?: boolean | null;
+   * Заменять внешние площадки
+   * @nullable
+   */
+  replace_external_pads?: boolean | null
   /**
-     * Цена от
-     * @nullable
-     */
-  current_price_from?: number | null;
+   * Цена от
+   * @nullable
+   */
+  current_price_from?: number | null
   /**
-     * Цена до
-     * @nullable
-     */
-  current_price_to?: number | null;
+   * Цена до
+   * @nullable
+   */
+  current_price_to?: number | null
   /**
-     * Цена за км от
-     * @nullable
-     */
-  price_per_km_from?: number | null;
+   * Цена за км от
+   * @nullable
+   */
+  price_per_km_from?: number | null
   /**
-     * Цена за км до
-     * @nullable
-     */
-  price_per_km_to?: number | null;
+   * Цена за км до
+   * @nullable
+   */
+  price_per_km_to?: number | null
   /**
-     * Фильтр по типу аукциона
-     *
-     * Тип аукциона:
-     * * **Request** — подтверждён (1)
-     * * **Up** — подтверждён (2)
-     * * **Down** — подтверждён (3)
-     * * **FixPrice** — подтверждён (4)
-     * * **Unknown** — неизвестный статус
-     */
-  auc_type?: AuctionListRequestAucTypeItem[];
+   * Фильтр по типу аукциона
+   *
+   * Тип аукциона:
+   * * **Request** — подтверждён (1)
+   * * **Up** — подтверждён (2)
+   * * **Down** — подтверждён (3)
+   * * **FixPrice** — подтверждён (4)
+   * * **Unknown** — неизвестный статус
+   */
+  auc_type?: AuctionListRequestAucTypeItem[]
 }

@@ -8,19 +8,19 @@
 
 export interface AuctionShowTradingSettings {
   /**
-     * Продление аукциона после ставки (мин)
-     * @nullable
-     */
-  prolong_after_bet?: number | null;
+   * Продление аукциона после ставки (мин)
+   * @nullable
+   */
+  prolong_after_bet?: number | null
   /** @nullable */
-  winner_confirm?: number | null;
+  winner_confirm?: number | null
   /** @nullable */
-  winner_counter_mode?: number | null;
+  winner_counter_mode?: number | null
   /**
-     * Время на передачу (ч)
-     * @nullable
-     */
-  transmission_time_in?: number | null;
+   * Время на передачу (ч)
+   * @nullable
+   */
+  transmission_time_in?: number | null
   /** @nullable */
-  coefficient?: number | null;
+  coefficient?: number | null
 }

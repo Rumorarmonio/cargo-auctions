@@ -5,47 +5,47 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import type { BetItemPriceInfo } from './betItemPriceInfo';
+import type { BetItemPriceInfo } from './betItemPriceInfo'
 
 export interface BetItem {
   /** ID ставки */
-  id?: number;
+  id?: number
   /** Дата и время создания ставки */
-  created_at?: string;
+  created_at?: string
   /** ID аукциона */
-  auction_id?: number;
+  auction_id?: number
   /** ID подписчика (перевозчика) */
-  subscriber_id?: number;
+  subscriber_id?: number
   /** Имя контактного лица */
-  contact_name?: string;
+  contact_name?: string
   /** Телефон контактного лица (пустая строка если не задан) */
-  contact_phone?: string;
+  contact_phone?: string
   /** Цена ставки с НДС */
-  price_with_vat?: number;
+  price_with_vat?: number
   /** Цена ставки без НДС */
-  price_no_vat?: number;
+  price_no_vat?: number
   /** ID организации перевозчика */
-  organization_id?: number;
+  organization_id?: number
   /** ИНН организации перевозчика */
-  organization_inn?: string;
+  organization_inn?: string
   /** Название организации перевозчика (пустая строка если не задано) */
-  organization_name?: string;
+  organization_name?: string
   /** @nullable */
-  transporter_comment?: string | null;
+  transporter_comment?: string | null
   /** Ставка отклонена */
-  is_rejected?: boolean;
+  is_rejected?: boolean
   /** Ставка является встречной */
-  is_counter?: boolean;
+  is_counter?: boolean
   /**
-     * Место в рейтинге ставок
-     * @nullable
-     */
-  place?: number | null;
+   * Место в рейтинге ставок
+   * @nullable
+   */
+  place?: number | null
   /** Ставка является победившей */
-  is_win?: boolean;
+  is_win?: boolean
   /** Номер рейса (0 если не задан) */
-  run_number?: number;
+  run_number?: number
   /** Причина отмены ставки (пустая строка если не отменена) */
-  cancel_reason?: string;
-  price_info?: BetItemPriceInfo;
+  cancel_reason?: string
+  price_info?: BetItemPriceInfo
 }

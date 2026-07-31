@@ -5,47 +5,47 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import type { CarRequirements } from './carRequirements';
-import type { Docs } from './docs';
-import type { LoadingTypes } from './loadingTypes';
+import type { CarRequirements } from './carRequirements'
+import type { Docs } from './docs'
+import type { LoadingTypes } from './loadingTypes'
 
 export interface AuctionShowCargo {
   /** Цена груза */
-  price?: string;
+  price?: string
   /** @nullable */
-  currency?: number | null;
-  is_international?: boolean;
+  currency?: number | null
+  is_international?: boolean
   /**
-     * Расстояние в км
-     * @nullable
-     */
-  distance?: number | null;
-  truck_count?: number;
-  body_type?: string;
+   * Расстояние в км
+   * @nullable
+   */
+  distance?: number | null
+  truck_count?: number
+  body_type?: string
   /** @nullable */
-  temp_from?: number | null;
+  temp_from?: number | null
   /** @nullable */
-  temp_to?: number | null;
+  temp_to?: number | null
   /** @nullable */
-  conics?: number | null;
+  conics?: number | null
   /** @nullable */
-  belts?: number | null;
+  belts?: number | null
   /** @nullable */
-  adr?: number | null;
+  adr?: number | null
   /** @nullable */
-  coupling?: boolean | null;
+  coupling?: boolean | null
   /** @nullable */
-  air_pass?: boolean | null;
+  air_pass?: boolean | null
   /** @nullable */
-  low_loader?: boolean | null;
+  low_loader?: boolean | null
   /** @nullable */
-  additional_load?: boolean | null;
-  containered?: boolean;
+  additional_load?: boolean | null
+  containered?: boolean
   /** @nullable */
-  container_type?: string | null;
+  container_type?: string | null
   /** @nullable */
-  container_size?: string | null;
-  loading_types?: LoadingTypes;
-  docs?: Docs;
-  car?: CarRequirements | null;
+  container_size?: string | null
+  loading_types?: LoadingTypes
+  docs?: Docs
+  car?: CarRequirements | null
 }

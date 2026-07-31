@@ -7,8 +7,8 @@
  */
 
 export interface LoadingTypes {
-  side?: boolean;
-  top?: boolean;
-  rear?: boolean;
-  full?: boolean;
+  side?: boolean
+  top?: boolean
+  rear?: boolean
+  full?: boolean
 }

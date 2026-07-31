@@ -8,5 +8,5 @@
 
 export interface SetBetRequest {
   /** Цена ставки (> 0) */
-  price: number;
+  price: number
 }

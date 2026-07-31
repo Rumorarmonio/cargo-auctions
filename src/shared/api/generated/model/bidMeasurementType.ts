@@ -12,11 +12,10 @@
  * - `PerKm` — за км (1)
  * - `Unknown` — неизвестный тип
  */
-export type BidMeasurementType = typeof BidMeasurementType[keyof typeof BidMeasurementType];
-
+export type BidMeasurementType = (typeof BidMeasurementType)[keyof typeof BidMeasurementType]
 
 export const BidMeasurementType = {
   PerRoute: 'PerRoute',
   PerKm: 'PerKm',
   Unknown: 'Unknown',
-} as const;
+} as const

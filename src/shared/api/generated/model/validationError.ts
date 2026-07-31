@@ -11,11 +11,11 @@
  */
 export interface ValidationError {
   /** Путь к полю (snake_case, вложенные — через точку) */
-  field: string;
-  message: string;
+  field: string
+  message: string
   /**
-     * Машиночитаемый код нарушения
-     * @nullable
-     */
-  code?: string | null;
+   * Машиночитаемый код нарушения
+   * @nullable
+   */
+  code?: string | null
 }

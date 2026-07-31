@@ -10,4 +10,4 @@
  * Сортировка по полям; ключ — имя поля, значение — направление
  * @nullable
  */
-export type AuctionListRequestSort = {[key: string]: 'asc' | 'desc'} | null;
+export type AuctionListRequestSort = { [key: string]: 'asc' | 'desc' } | null

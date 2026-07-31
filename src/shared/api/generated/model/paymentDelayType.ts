@@ -13,11 +13,10 @@
  * - `Unknown` — неизвестный тип
  * @nullable
  */
-export type PaymentDelayType = typeof PaymentDelayType[keyof typeof PaymentDelayType] | null;
-
+export type PaymentDelayType = (typeof PaymentDelayType)[keyof typeof PaymentDelayType] | null
 
 export const PaymentDelayType = {
   CalendarDays: 'CalendarDays',
   WorkDays: 'WorkDays',
   Unknown: 'Unknown',
-} as const;
+} as const

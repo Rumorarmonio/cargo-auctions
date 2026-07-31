@@ -7,16 +7,16 @@
  */
 
 export interface RoutePointCargo {
-  name?: string;
-  package_name?: string;
+  name?: string
+  package_name?: string
   /** Вес в тоннах (строковое представление с 3 знаками) */
-  weight?: string;
+  weight?: string
   /** Объём в м³ (строковое представление с 3 знаками) */
-  volume?: string;
-  length?: string;
-  width?: string;
-  height?: string;
-  oversized?: boolean;
+  volume?: string
+  length?: string
+  width?: string
+  height?: string
+  oversized?: boolean
   /** @nullable */
-  package_amount?: number | null;
+  package_amount?: number | null
 }

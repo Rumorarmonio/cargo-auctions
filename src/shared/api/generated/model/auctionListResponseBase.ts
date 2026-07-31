@@ -5,14 +5,14 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import type { AuctionListItem } from './auctionListItem';
-import type { AuctionListMeta } from './auctionListMeta';
+import type { AuctionListItem } from './auctionListItem'
+import type { AuctionListMeta } from './auctionListMeta'
 
 /**
  * Корневой объект ответа списка аукционов с мета-данными.
  */
 export interface AuctionListResponseBase {
   /** Коллекция аукционов */
-  data?: AuctionListItem[];
-  meta?: AuctionListMeta;
+  data?: AuctionListItem[]
+  meta?: AuctionListMeta
 }

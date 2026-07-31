@@ -8,29 +8,29 @@
 
 export interface AuctionShowTradingPrice {
   /** @nullable */
-  start?: number | null;
+  start?: number | null
   /** @nullable */
-  start_no_vat?: number | null;
+  start_no_vat?: number | null
   /** @nullable */
-  current?: number | null;
+  current?: number | null
   /** @nullable */
-  current_no_vat?: number | null;
+  current_no_vat?: number | null
   /** @nullable */
-  available?: number | null;
+  available?: number | null
   /** @nullable */
-  available_no_vat?: number | null;
+  available_no_vat?: number | null
   /** @nullable */
-  min?: number | null;
+  min?: number | null
   /** @nullable */
-  min_no_vat?: number | null;
+  min_no_vat?: number | null
   /** @nullable */
-  max?: number | null;
+  max?: number | null
   /** @nullable */
-  max_no_vat?: number | null;
+  max_no_vat?: number | null
   /** @nullable */
-  step?: number | null;
+  step?: number | null
   /** @nullable */
-  step_no_vat?: number | null;
+  step_no_vat?: number | null
   /** current_price_no_vat / distance; 0 если distance = 0 */
-  price_per_km?: number;
+  price_per_km?: number
 }

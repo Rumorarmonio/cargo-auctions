@@ -10,10 +10,10 @@
  * Требования к ТС; null если не заданы
  */
 export interface AuctionListItemCargoCar {
-  type?: string;
-  weight?: number;
-  volume?: number;
-  width?: number;
-  length?: number;
-  height?: number;
+  type?: string
+  weight?: number
+  volume?: number
+  width?: number
+  length?: number
+  height?: number
 }

@@ -8,7 +8,7 @@
 
 export interface Assembly {
   /** @nullable */
-  num?: string | null;
+  num?: string | null
   /** @nullable */
-  date?: string | null;
+  date?: string | null
 }

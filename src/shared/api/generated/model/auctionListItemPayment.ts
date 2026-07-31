@@ -10,9 +10,9 @@
  * Информация об оплате.
  */
 export interface AuctionListItemPayment {
-  form?: string;
+  form?: string
   /** Код валюты (ISO 4217 numeric) */
-  currency_code?: string;
-  consignor?: string;
-  consignee?: string;
+  currency_code?: string
+  consignor?: string
+  consignee?: string
 }

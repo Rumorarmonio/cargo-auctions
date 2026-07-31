@@ -5,29 +5,29 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import type { AuctionListItemMainAucType } from './auctionListItemMainAucType';
+import type { AuctionListItemMainAucType } from './auctionListItemMainAucType'
 
 /**
  * Основные данные аукциона.
  */
 export interface AuctionListItemMain {
-  id?: number;
-  cargo_num?: string;
-  cargo_date?: string;
+  id?: number
+  cargo_num?: string
+  cargo_date?: string
   /**
-     * Тип аукциона:
-     *
-     * * **Request** — заявочный (1)
-     * * **Up** — на повышение (2)
-     * * **Down** — на понижение (3)
-     * * **FixPrice** — фиксированная цена (4)
-     * * **Unknown** — неизвестный тип
-     */
-  auc_type?: AuctionListItemMainAucType;
-  order_uid?: string;
-  created_at?: string;
-  priority_sort?: number;
-  is_assembly?: boolean;
+   * Тип аукциона:
+   *
+   * * **Request** — заявочный (1)
+   * * **Up** — на повышение (2)
+   * * **Down** — на понижение (3)
+   * * **FixPrice** — фиксированная цена (4)
+   * * **Unknown** — неизвестный тип
+   */
+  auc_type?: AuctionListItemMainAucType
+  order_uid?: string
+  created_at?: string
+  priority_sort?: number
+  is_assembly?: boolean
   /** @nullable */
-  price_per_km?: number | null;
+  price_per_km?: number | null
 }

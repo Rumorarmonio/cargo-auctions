@@ -15,8 +15,8 @@
  * * **FixPrice** — фиксированная цена (4)
  * * **Unknown** — неизвестный тип
  */
-export type AuctionListItemMainAucType = typeof AuctionListItemMainAucType[keyof typeof AuctionListItemMainAucType];
-
+export type AuctionListItemMainAucType =
+  (typeof AuctionListItemMainAucType)[keyof typeof AuctionListItemMainAucType]
 
 export const AuctionListItemMainAucType = {
   Request: 'Request',
@@ -24,4 +24,4 @@ export const AuctionListItemMainAucType = {
   Down: 'Down',
   FixPrice: 'FixPrice',
   Unknown: 'Unknown',
-} as const;
+} as const

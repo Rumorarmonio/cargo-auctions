@@ -6,8 +6,8 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type AuctionListRequestStatusItem = typeof AuctionListRequestStatusItem[keyof typeof AuctionListRequestStatusItem];
-
+export type AuctionListRequestStatusItem =
+  (typeof AuctionListRequestStatusItem)[keyof typeof AuctionListRequestStatusItem]
 
 export const AuctionListRequestStatusItem = {
   NotParticipating: 'NotParticipating',
@@ -19,4 +19,4 @@ export const AuctionListRequestStatusItem = {
   Winner: 'Winner',
   Accepted: 'Accepted',
   Unknown: 'Unknown',
-} as const;
+} as const

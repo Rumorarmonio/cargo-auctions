@@ -11,15 +11,15 @@
  * @nullable
  */
 export type CarRequirements = {
-  type?: string;
+  type?: string
   /** @nullable */
-  weight?: number | null;
+  weight?: number | null
   /** @nullable */
-  volume?: number | null;
+  volume?: number | null
   /** @nullable */
-  width?: number | null;
+  width?: number | null
   /** @nullable */
-  length?: number | null;
+  length?: number | null
   /** @nullable */
-  height?: number | null;
-} | null;
+  height?: number | null
+} | null

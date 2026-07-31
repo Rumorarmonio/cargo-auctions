@@ -5,9 +5,9 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import type { ProblemDetail } from './problemDetail';
+import type { ProblemDetail } from './problemDetail'
 
 /**
  * Временная недоступность upstream (перегрузка, соединение не установлено)
  */
-export type ServiceUnavailableResponse = ProblemDetail;
+export type ServiceUnavailableResponse = ProblemDetail

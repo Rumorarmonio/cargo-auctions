@@ -16,8 +16,8 @@
  * * **Confirmed** — подтверждён (5)
  * * **Unknown** — неизвестный статус
  */
-export type AuctionListItemTradingStatusMobile = typeof AuctionListItemTradingStatusMobile[keyof typeof AuctionListItemTradingStatusMobile];
-
+export type AuctionListItemTradingStatusMobile =
+  (typeof AuctionListItemTradingStatusMobile)[keyof typeof AuctionListItemTradingStatusMobile]
 
 export const AuctionListItemTradingStatusMobile = {
   NotParticipating: 'NotParticipating',
@@ -26,4 +26,4 @@ export const AuctionListItemTradingStatusMobile = {
   Winner: 'Winner',
   Confirmed: 'Confirmed',
   Unknown: 'Unknown',
-} as const;
+} as const

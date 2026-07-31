@@ -8,10 +8,10 @@
 
 export interface AuctionListItemTradingYour {
   /** Есть ли ставка от текущего пользователя */
-  bet?: boolean;
+  bet?: boolean
   /**
-     * Последняя ставка пользователя
-     * @nullable
-     */
-  last_bet?: number | null;
+   * Последняя ставка пользователя
+   * @nullable
+   */
+  last_bet?: number | null
 }

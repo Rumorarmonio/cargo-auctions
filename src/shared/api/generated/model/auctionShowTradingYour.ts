@@ -7,10 +7,10 @@
  */
 
 export interface AuctionShowTradingYour {
-  bet?: boolean;
+  bet?: boolean
   /** @nullable */
-  last_bet?: number | null;
+  last_bet?: number | null
   /** @nullable */
-  last_bet_with_vat?: number | null;
-  win?: boolean;
+  last_bet_with_vat?: number | null
+  win?: boolean
 }

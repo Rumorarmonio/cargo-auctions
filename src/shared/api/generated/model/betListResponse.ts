@@ -5,8 +5,8 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import type { BetItem } from './betItem';
+import type { BetItem } from './betItem'
 
 export interface BetListResponse {
-  bets: BetItem[];
+  bets: BetItem[]
 }

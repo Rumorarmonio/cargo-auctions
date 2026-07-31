@@ -14,11 +14,12 @@
  * * **Unknown** — неизвестный тип
  * @nullable
  */
-export type AuctionListItemTradingBidMeasurementType = typeof AuctionListItemTradingBidMeasurementType[keyof typeof AuctionListItemTradingBidMeasurementType] | null;
-
+export type AuctionListItemTradingBidMeasurementType =
+  | (typeof AuctionListItemTradingBidMeasurementType)[keyof typeof AuctionListItemTradingBidMeasurementType]
+  | null
 
 export const AuctionListItemTradingBidMeasurementType = {
   PerRoute: 'PerRoute',
   PerKm: 'PerKm',
   Unknown: 'Unknown',
-} as const;
+} as const

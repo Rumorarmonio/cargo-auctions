@@ -1,4 +1,4 @@
-import { defineConfig } from 'orval';
+import { defineConfig } from 'orval'
 
 export default defineConfig({
   auctions: {
@@ -12,4 +12,4 @@ export default defineConfig({
       clean: true,
     },
   },
-});
+})

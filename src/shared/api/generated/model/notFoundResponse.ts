@@ -5,9 +5,9 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import type { ProblemDetail } from './problemDetail';
+import type { ProblemDetail } from './problemDetail'
 
 /**
  * Ресурс не найден
  */
-export type NotFoundResponse = ProblemDetail;
+export type NotFoundResponse = ProblemDetail

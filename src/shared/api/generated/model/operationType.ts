@@ -12,11 +12,10 @@
  * - `Unloading` — выгрузка (2)
  * - `Unknown` — неизвестный тип
  */
-export type OperationType = typeof OperationType[keyof typeof OperationType];
-
+export type OperationType = (typeof OperationType)[keyof typeof OperationType]
 
 export const OperationType = {
   Loading: 'Loading',
   Unloading: 'Unloading',
   Unknown: 'Unknown',
-} as const;
+} as const

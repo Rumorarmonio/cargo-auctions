@@ -5,9 +5,9 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import type { ProblemDetail } from './problemDetail';
+import type { ProblemDetail } from './problemDetail'
 
 /**
  * Не авторизован (отсутствует или недействителен Bearer-токен)
  */
-export type UnauthorizedResponse = ProblemDetail;
+export type UnauthorizedResponse = ProblemDetail

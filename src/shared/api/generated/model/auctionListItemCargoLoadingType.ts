@@ -10,8 +10,8 @@
  * Данные о грузе.
  */
 export interface AuctionListItemCargoLoadingType {
-  side?: boolean;
-  top?: boolean;
-  rear?: boolean;
-  full?: boolean;
+  side?: boolean
+  top?: boolean
+  rear?: boolean
+  full?: boolean
 }

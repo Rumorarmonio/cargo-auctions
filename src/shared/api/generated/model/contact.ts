@@ -8,13 +8,13 @@
 
 export interface Contact {
   /** @nullable */
-  name?: string | null;
+  name?: string | null
   /** @nullable */
-  phone?: string | null;
+  phone?: string | null
   /** @nullable */
-  work_phone?: string | null;
+  work_phone?: string | null
   /** @nullable */
-  uid?: string | null;
+  uid?: string | null
   /** @nullable */
-  email?: string | null;
+  email?: string | null
 }

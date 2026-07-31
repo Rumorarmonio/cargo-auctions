@@ -5,9 +5,9 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import type { ValidationProblem } from './validationProblem';
+import type { ValidationProblem } from './validationProblem'
 
 /**
  * Ошибка валидации входных данных
  */
-export type ValidationFailedResponse = ValidationProblem;
+export type ValidationFailedResponse = ValidationProblem

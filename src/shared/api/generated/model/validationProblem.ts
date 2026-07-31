@@ -5,16 +5,16 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import type { ValidationError } from './validationError';
+import type { ValidationError } from './validationError'
 
 /**
  * Ошибка валидации входных данных (422). Отличается от бизнес-ошибки кодом `validation_failed` и наличием `errors[]`.
  */
 export interface ValidationProblem {
-  code: string;
-  title: string;
-  message: string;
+  code: string
+  title: string
+  message: string
   /** @nullable */
-  trace_id?: string | null;
-  errors: ValidationError[];
+  trace_id?: string | null
+  errors: ValidationError[]
 }

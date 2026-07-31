@@ -11,14 +11,14 @@
  */
 export interface ProblemDetail {
   /** Машиночитаемый код (snake_case), стабилен между релизами */
-  code: string;
+  code: string
   /** Короткое название типа ошибки */
-  title: string;
+  title: string
   /** Пояснение конкретного случая */
-  message: string;
+  message: string
   /**
-     * Идентификатор запроса для корреляции с логами
-     * @nullable
-     */
-  trace_id?: string | null;
+   * Идентификатор запроса для корреляции с логами
+   * @nullable
+   */
+  trace_id?: string | null
 }

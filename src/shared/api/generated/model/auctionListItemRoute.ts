@@ -5,12 +5,12 @@
  * API для мобильных приложений и web UL
  * OpenAPI spec version: 1.0.0
  */
-import type { AuctionListItemRoutePoint } from './auctionListItemRoutePoint';
+import type { AuctionListItemRoutePoint } from './auctionListItemRoutePoint'
 
 /**
  * Объединенный маршрут.
  */
 export interface AuctionListItemRoute {
-  load?: AuctionListItemRoutePoint;
-  unload?: AuctionListItemRoutePoint;
+  load?: AuctionListItemRoutePoint
+  unload?: AuctionListItemRoutePoint
 }
