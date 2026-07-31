@@ -2,24 +2,30 @@
 
 ## Проект
 
-Краткое описание проекта.
+SPA грузовых аукционов на React, TypeScript, Vite, TanStack Router, TanStack Query, Mantine, SCSS Modules, Orval, Zustand, React Hook Form, Zod и MSW.
 
 ## Цель
 
-Что должно получиться в рамках текущего плана.
+Локально запускаемое тестовое приложение, соответствующее OpenAPI-контракту и требованиям `SPEC.md`.
 
 ## Этапы
 
-1. ...
-2. ...
-3. ...
+1. Уточнить у HR наличие готовых fixtures — ожидает ответа.
+2. Bootstrap’нуть Vite/React/TypeScript и базовую FSD-структуру — не начат.
+3. Настроить Mantine, SCSS architecture, TanStack Router и providers — не начат.
+4. Настроить Orval и сгенерировать API-типы, клиент и TanStack Query hooks — не начат.
+5. Создать seed-данные или адаптировать fixtures, добавить MSW handlers и in-memory store — не начат.
+6. Реализовать список аукционов, URL-фильтры, pagination и prefetch detail — не начат.
+7. Реализовать detail-страницу и отдельную страницу `/auctions/:auctionUuid/bet` — не начат.
+8. Реализовать историю ставок, mutation ставки, invalidation и toast-сообщения — не начат.
+9. Добавить unit-тесты чистой логики и интеграционные тесты MSW handlers — не начат.
+10. Подготовить README и `AI_USAGE.md`, проверить в Chrome — не начат.
 
 ## Статус этапов
 
-- Этап 1 — не начат
-- Этап 2 — в работе
-- Этап 3 — выполнен
+- Этап 1 — ожидает внешнего ответа HR
+- Этапы 2–10 — не начаты
 
 ## Следующий этап
 
-Что делать следующим крупным шагом.
+Получить ответ HR о fixtures. При отсутствии данных перейти к bootstrap проекта и самостоятельно создать seed-данные, покрывающие требуемые edge cases.
