@@ -1,15 +1,2 @@
-@use './variables' as *;
-
-:root {
-  color: #1a1b1e;
-  background: $color-background;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  min-width: 320px;
-  margin: 0;
-}
+// Compatibility entrypoint. The application imports main.scss directly.
+@use 'main';

@@ -1,0 +1,17 @@
+// Стартовые значения до анализа дизайн-системы проекта.
+$white: #fff;
+$black: #1a1b1e;
+$grey-light: #d9d9d9;
+$grey: #777;
+$accent: #2563eb;
+$error: #c94938;
+
+$color-background: #f8f9fa;
+$content-max-width: 1200px;
+
+$transition: 0.3s;
+$transition-short: 0.15s;
+
+// Безопасный системный стек без внешней загрузки шрифтов.
+$font-base: -apple-system, blinkmacsystemfont, 'segoe ui', roboto, arial, sans-serif;
+$font-title: $font-base;

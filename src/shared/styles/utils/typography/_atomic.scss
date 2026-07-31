@@ -1,0 +1,46 @@
+@use '../mixins' as *;
+@use '../variables' as *;
+
+@mixin text-0px-h1 {
+  @include font(32px, 500, 1.2, 0, $font-title);
+}
+@mixin text-1024px-h1 {
+  @include font(48px, 500, 1.1, 0, $font-title);
+}
+@mixin text-0px-h2 {
+  @include font(28px, 500, 1.2, 0, $font-title);
+}
+@mixin text-1024px-h2 {
+  @include font(40px, 500, 1.1, 0, $font-title);
+}
+@mixin text-0px-h3 {
+  @include font(24px, 500, 1.2, 0, $font-title);
+}
+@mixin text-1024px-h3 {
+  @include font(32px, 500, 1.15, 0, $font-title);
+}
+@mixin text-0px-h4 {
+  @include font(20px, 500, 1.25, 0, $font-title);
+}
+@mixin text-1024px-h4 {
+  @include font(24px, 500, 1.2, 0, $font-title);
+}
+
+@mixin text-0px-p1 {
+  @include font(18px, 400, 1.5, 0, $font-base);
+}
+@mixin text-1024px-p1 {
+  @include font(20px, 400, 1.45, 0, $font-base);
+}
+@mixin text-0px-p2 {
+  @include font(18px, 400, 1.5, 0, $font-base);
+}
+@mixin text-0px-p3 {
+  @include font(16px, 400, 1.5, 0, $font-base);
+}
+@mixin text-0px-p4 {
+  @include font(14px, 400, 1.45, 0, $font-base);
+}
+@mixin text-0px-p5 {
+  @include font(13px, 400, 1.4, 0, $font-base);
+}

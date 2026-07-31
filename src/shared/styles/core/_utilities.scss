@@ -1,0 +1,34 @@
+@use '../utils/functions' as *;
+@use '../utils/variables' as *;
+
+.none {
+  display: none !important;
+}
+
+.text-bold,
+b {
+  font-weight: 700;
+}
+
+.text-accent {
+  color: $accent;
+}
+
+.italic,
+i,
+em {
+  font-style: italic;
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.underline {
+  text-decoration: underline;
+  text-underline-offset: rem(4px);
+}

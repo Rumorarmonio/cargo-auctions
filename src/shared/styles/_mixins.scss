@@ -1,5 +1,2 @@
-@mixin mobile {
-  @media (width <= 48em) {
-    @content;
-  }
-}
+// Compatibility facade for existing Sass imports.
+@forward 'utils/mixins';

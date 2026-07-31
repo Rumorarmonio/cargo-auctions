@@ -1,0 +1,43 @@
+@use '../utils/mixins' as *;
+@use '../utils/variables' as *;
+
+html {
+  scroll-behavior: smooth;
+}
+
+@include reduced-motion {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+:root {
+  color: $black;
+  background: $color-background;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  font-family: $font-base;
+  color: $black;
+  background: $color-background;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  @include container($with-padding: false);
+
+  &:not(.no-padding) {
+    padding-inline: var(--padding);
+  }
+
+  &._wide {
+    max-width: var(--container-wide);
+  }
+
+  &._thin {
+    max-width: var(--container-thin);
+  }
+}

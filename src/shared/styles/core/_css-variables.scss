@@ -1,0 +1,17 @@
+@use '../utils/media' as *;
+@use '../utils/variables' as *;
+
+:root {
+  --padding: 24px;
+  --padding-negative: calc(var(--padding) * -1);
+  --content: #{$content-max-width};
+  --content-wide: 1440px;
+  --content-thin: 760px;
+  --container: calc(var(--content) + (var(--padding) * 2));
+  --container-wide: calc(var(--content-wide) + (var(--padding) * 2));
+  --container-thin: calc(var(--content-thin) + (var(--padding) * 2));
+
+  @include mobile-767 {
+    --padding: 12px;
+  }
+}

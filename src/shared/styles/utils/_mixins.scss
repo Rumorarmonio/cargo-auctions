@@ -1,0 +1,74 @@
+@use 'functions' as *;
+@use 'media' as *;
+@use 'variables' as *;
+
+@mixin mobile {
+  @include mobile-767 {
+    @content;
+  }
+}
+
+@mixin hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+@mixin hover-active {
+  @include hover {
+    @content;
+  }
+
+  &:active {
+    @content;
+  }
+}
+
+@mixin transition($properties, $duration: $transition, $timing-function: ease) {
+  transition-property: $properties;
+  transition-duration: $duration;
+  transition-timing-function: $timing-function;
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+@mixin font(
+  $font-size,
+  $font-weight: 400,
+  $line-height: null,
+  $letter-spacing: null,
+  $font-family: null,
+  $text-transform: null
+) {
+  font-size: rem($font-size);
+  font-weight: $font-weight;
+
+  @if $line-height {
+    line-height: $line-height;
+  }
+  @if $letter-spacing {
+    letter-spacing: $letter-spacing;
+  }
+  @if $font-family {
+    font-family: $font-family;
+  }
+  @if $text-transform {
+    text-transform: $text-transform;
+  }
+}
+
+@mixin container($max-width: var(--container), $with-padding: true) {
+  width: 100%;
+  max-width: $max-width;
+  margin-inline: auto;
+
+  @if $with-padding {
+    padding-inline: var(--padding);
+  }
+}

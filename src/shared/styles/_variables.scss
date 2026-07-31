@@ -1,2 +1,2 @@
-$color-background: #f8f9fa;
-$content-max-width: 1200px;
+// Compatibility facade for existing Sass imports.
+@forward 'utils/variables';

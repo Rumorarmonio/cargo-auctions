@@ -1,0 +1,89 @@
+@use '../utils/media' as *;
+
+.max {
+  &-desktop-1919 {
+    @include min-desktop-1920 {
+      display: none !important;
+    }
+  }
+
+  &-desktop-1799 {
+    @include min-desktop-1800 {
+      display: none !important;
+    }
+  }
+
+  &-desktop-1599 {
+    @include min-desktop-1600 {
+      display: none !important;
+    }
+  }
+
+  &-desktop-1439 {
+    @include min-desktop-1440 {
+      display: none !important;
+    }
+  }
+
+  &-laptop-1279 {
+    @include min-desktop-1280 {
+      display: none !important;
+    }
+  }
+
+  &-tablet-1023 {
+    @include min-laptop-1024 {
+      display: none !important;
+    }
+  }
+
+  &-mobile-767 {
+    @include min-tablet-768 {
+      display: none !important;
+    }
+  }
+}
+
+.min {
+  &-desktop-1920 {
+    @include desktop-1919 {
+      display: none !important;
+    }
+  }
+
+  &-desktop-1800 {
+    @include desktop-1799 {
+      display: none !important;
+    }
+  }
+
+  &-desktop-1600 {
+    @include desktop-1599 {
+      display: none !important;
+    }
+  }
+
+  &-desktop-1440 {
+    @include desktop-1439 {
+      display: none !important;
+    }
+  }
+
+  &-desktop-1280 {
+    @include laptop-1279 {
+      display: none !important;
+    }
+  }
+
+  &-laptop-1024 {
+    @include tablet-1023 {
+      display: none !important;
+    }
+  }
+
+  &-tablet-768 {
+    @include mobile-767 {
+      display: none !important;
+    }
+  }
+}

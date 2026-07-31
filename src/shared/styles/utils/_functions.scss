@@ -1,0 +1,13 @@
+@use 'sass:math';
+
+@function rem($value, $base: 16px) {
+  @if math.is-unitless($value) or not math.compatible($value, 1px) {
+    @error 'rem() expects a px value, for example rem(16px).';
+  }
+
+  @if math.is-unitless($base) or not math.compatible($base, 1px) {
+    @error 'rem() expects a px base, for example rem(16px, 16px).';
+  }
+
+  @return math.div($value, $base) * 1rem;
+}

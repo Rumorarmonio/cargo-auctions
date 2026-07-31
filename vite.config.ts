@@ -9,7 +9,7 @@ export default defineConfig({
   css: {
     modules: { localsConvention: 'camelCaseOnly' },
     preprocessorOptions: {
-      scss: { additionalData: '@use "@/shared/styles/index.scss" as *;' },
+      scss: { additionalData: '@use "@/shared/styles/_tools.scss" as *;' },
     },
   },
 })
