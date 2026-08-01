@@ -14,7 +14,7 @@ SPA грузовых аукционов на React, TypeScript, Vite, TanStack R
 2. Bootstrap’нуть Vite/React/TypeScript и базовую FSD-структуру — выполнен.
 3. Настроить Mantine, SCSS architecture, TanStack Router и providers — выполнен.
 4. Настроить Orval и сгенерировать API-типы, клиент и TanStack Query hooks — выполнен.
-5. Создать seed-данные или адаптировать fixtures, добавить MSW handlers и in-memory store — не начат.
+5. Создать seed-данные или адаптировать fixtures, добавить MSW handlers и in-memory store — выполнен на собственных seed-данных.
 6. Реализовать список аукционов, URL-фильтры, pagination и prefetch detail — не начат.
 7. Реализовать detail-страницу и отдельную страницу `/auctions/:auctionUuid/bet` — не начат.
 8. Реализовать историю ставок, mutation ставки, invalidation и toast-сообщения — не начат.
@@ -25,9 +25,9 @@ SPA грузовых аукционов на React, TypeScript, Vite, TanStack R
 
 - Этап 1 — ожидает внешнего ответа HR
 - Этапы 2–4 — выполнены
-- Этап 5 — не начат
+- Этап 5 — выполнен
 - Этапы 6–10 — не начаты
 
 ## Следующий этап
 
-Добавить fixtures, MSW-store и handlers для четырёх API endpoint’ов; fixtures уточнить до или во время реализации mock-слоя.
+Реализовать страницу списка аукционов с TanStack Query, базовыми состояниями и переходом на detail.
