@@ -348,6 +348,95 @@ const emptyBetsDetail = createDetail('auction-kem-004', {
     price: { ...firstDetail.trading.price, current: 118000, available: 117000 },
   },
 })
+const edgeCaseDetail = createDetail('auction-barnaul-005', {
+  main: {
+    ...firstDetail.main,
+    id: 1005,
+    cargo_num: 'CA-2026-005-LONG-ROUTE',
+    auc_type: 'Request',
+  },
+  organizer: {
+    ...firstDetail.organizer,
+    organization_name: '',
+    organization_inn: '',
+    organization_kpp: '',
+  },
+  contacts: [],
+  cargo: {
+    ...firstDetail.cargo,
+    price: '0',
+    distance: null,
+    truck_count: 3,
+    temp_from: null,
+    temp_to: null,
+    conics: null,
+    belts: null,
+    car: null,
+  },
+  trading: {
+    ...firstDetail.trading,
+    status: 'Planning',
+    status_mobile: 'NotParticipating',
+    can_set_bet: false,
+    is_bidder: false,
+    price: {
+      ...firstDetail.trading.price,
+      current: null,
+      current_no_vat: null,
+      available: null,
+      available_no_vat: null,
+      min: null,
+      min_no_vat: null,
+      max: null,
+      max_no_vat: null,
+      step: null,
+      step_no_vat: null,
+    },
+    your: { bet: false, last_bet: null },
+  },
+  routes: [
+    {
+      ...routePoints[0],
+      row_num: 1,
+      contact: undefined,
+      location: {
+        ...routePoints[0].location,
+        city_name: 'Барнаул',
+        city_full_name: 'Алтайский край, Барнаул',
+      },
+    },
+    {
+      ...routePoints[1],
+      row_num: 2,
+      contact: undefined,
+      location: {
+        ...routePoints[1].location,
+        city_name: 'Новокузнецк',
+        city_full_name: 'Кемеровская область, Новокузнецк',
+      },
+    },
+    {
+      ...routePoints[0],
+      row_num: 3,
+      contact: undefined,
+      location: {
+        ...routePoints[0].location,
+        city_name: 'Кемерово',
+        city_full_name: 'Кемеровская область, Кемерово',
+      },
+    },
+    {
+      ...routePoints[1],
+      row_num: 4,
+      contact: undefined,
+      location: {
+        ...routePoints[1].location,
+        city_name: 'Томск',
+        city_full_name: 'Томская область, Томск',
+      },
+    },
+  ],
+})
 
 export const auctionFixtures: AuctionFixture[] = [
   {
@@ -384,5 +473,28 @@ export const auctionFixtures: AuctionFixture[] = [
     listItem: createListItem(emptyBetsDetail),
     detail: emptyBetsDetail,
     bets: [],
+  },
+  {
+    uuid: 'auction-barnaul-005',
+    listItem: createListItem(edgeCaseDetail),
+    detail: edgeCaseDetail,
+    bets: [
+      makeBet(7, 1005, 0, {
+        price_with_vat: undefined,
+        price_no_vat: undefined,
+        organization_name: '',
+        contact_name: '',
+        place: null,
+        is_win: false,
+        is_rejected: true,
+        cancel_reason: 'Ставка отменена организатором',
+        price_info: {
+          price_with_vat: null,
+          price_no_vat: null,
+          payment_type: null,
+          vat_rate: null,
+        },
+      }),
+    ],
   },
 ]

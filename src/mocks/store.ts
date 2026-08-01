@@ -1,7 +1,7 @@
 import type { AuctionListItem, AuctionShowResponse, BetItem } from '@/shared/api/generated/model'
 import { auctionFixtures, type AuctionFixture } from './fixtures'
 
-const fixtures = structuredClone(auctionFixtures)
+let fixtures = structuredClone(auctionFixtures)
 
 const auctionStatuses = [
   'Planning',
@@ -199,9 +199,15 @@ export const mockAuctionStore = {
     return fixture ? structuredClone(fixture.detail) : undefined
   },
 
-  bets(uuid: string): BetItem[] | undefined {
+  bets(uuid: string, all = false): BetItem[] | undefined {
     const fixture = this.find(uuid)
-    return fixture ? structuredClone(fixture.bets) : undefined
+    if (!fixture) return undefined
+
+    const bets = all
+      ? fixture.bets
+      : fixture.bets.filter((bet) => !bet.cancel_reason && bet.is_rejected !== true)
+
+    return structuredClone(bets)
   },
 
   setBet(uuid: string, price: number): boolean {
@@ -262,6 +268,10 @@ export const mockAuctionStore = {
     }
     return true
   },
+}
+
+export function resetMockAuctionStore() {
+  fixtures = structuredClone(auctionFixtures)
 }
 
 export type MockAuctionList = ReturnType<typeof mockAuctionStore.list>

@@ -6,12 +6,12 @@ const apiError = (status: number, code: string, title: string, message: string) 
   HttpResponse.json({ code, title, message, trace_id: `mock-${Date.now()}` }, { status })
 
 export const handlers = [
-  http.post('/auctions/list', async ({ request }) => {
+  http.post('*/auctions/list', async ({ request }) => {
     const body = (await request.json().catch(() => ({}))) as AuctionListRequest
     return HttpResponse.json(mockAuctionStore.list(body as Record<string, unknown>))
   }),
 
-  http.get('/auctions/:auctionUuid', ({ params }) => {
+  http.get('*/auctions/:auctionUuid', ({ params }) => {
     const detail = mockAuctionStore.detail(String(params.auctionUuid))
     return detail
       ? HttpResponse.json(detail)
@@ -23,7 +23,7 @@ export const handlers = [
         )
   }),
 
-  http.get('/auctions/:auctionUuid/bets', ({ params }) => {
+  http.get('*/auctions/:auctionUuid/bets', ({ params, request }) => {
     const fixture = mockAuctionStore.find(String(params.auctionUuid))
     if (!fixture)
       return apiError(
@@ -39,10 +39,11 @@ export const handlers = [
         'История ставок недоступна',
         'Организатор скрыл историю ставок',
       )
-    return HttpResponse.json({ bets: mockAuctionStore.bets(fixture.uuid) ?? [] })
+    const all = new URL(request.url).searchParams.get('all') === 'true'
+    return HttpResponse.json({ bets: mockAuctionStore.bets(fixture.uuid, all) ?? [] })
   }),
 
-  http.post('/auctions/:auctionUuid/bets', async ({ params, request }) => {
+  http.post('*/auctions/:auctionUuid/bets', async ({ params, request }) => {
     const uuid = String(params.auctionUuid)
     const fixture = mockAuctionStore.find(uuid)
     if (!fixture)

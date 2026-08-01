@@ -7,39 +7,47 @@
     @include text-1024px-h1;
   }
 }
+
 %h2 {
   @include text-0px-h2;
   @include min-laptop-1024 {
     @include text-1024px-h2;
   }
 }
+
 %h3 {
   @include text-0px-h3;
   @include min-laptop-1024 {
     @include text-1024px-h3;
   }
 }
+
 %h4 {
   @include text-0px-h4;
   @include min-laptop-1024 {
     @include text-1024px-h4;
   }
 }
+
 %p1 {
   @include text-0px-p1;
   @include min-laptop-1024 {
     @include text-1024px-p1;
   }
 }
+
 %p2 {
   @include text-0px-p2;
 }
+
 %p3 {
   @include text-0px-p3;
 }
+
 %p4 {
   @include text-0px-p4;
 }
+
 %p5 {
   @include text-0px-p5;
 }

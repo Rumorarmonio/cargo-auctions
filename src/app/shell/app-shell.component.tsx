@@ -25,17 +25,12 @@ export function AppShell({ children }: { children: ReactNode }) {
         </Container>
       </MantineAppShell.Header>
       <MantineAppShell.Main>
-        <Container
-          size='xl'
-          py='xl'
+        <div
+          key={location.pathname}
+          className={styles.content}
         >
-          <div
-            key={location.pathname}
-            className={styles.content}
-          >
-            {children}
-          </div>
-        </Container>
+          {children}
+        </div>
       </MantineAppShell.Main>
     </MantineAppShell>
   )

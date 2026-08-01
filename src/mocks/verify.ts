@@ -35,8 +35,8 @@ export async function verifyMockApi() {
       'Список не содержит data[]',
     )
     assertCheck(
-      (list.body as { meta?: { total?: number } })?.meta?.total === 4,
-      'Список содержит не 4 seed-аукциона',
+      (list.body as { meta?: { total?: number } })?.meta?.total === 5,
+      'Список содержит не 5 seed-аукционов',
     )
     assertCheck(detail.status === 200, `Detail вернул HTTP ${detail.status}`)
     assertCheck(bets.status === 200, `История ставок вернула HTTP ${bets.status}`)

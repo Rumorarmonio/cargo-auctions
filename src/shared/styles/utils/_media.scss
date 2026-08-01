@@ -17,31 +17,37 @@
     @content;
   }
 }
+
 @mixin desktop-1799 {
   @include max-breakpoint($desktop-1800) {
     @content;
   }
 }
+
 @mixin desktop-1599 {
   @include max-breakpoint($desktop-1600) {
     @content;
   }
 }
+
 @mixin desktop-1439 {
   @include max-breakpoint($desktop-1440) {
     @content;
   }
 }
+
 @mixin laptop-1279 {
   @include max-breakpoint($desktop-1280) {
     @content;
   }
 }
+
 @mixin tablet-1023 {
   @include max-breakpoint($laptop-1024) {
     @content;
   }
 }
+
 @mixin mobile-767 {
   @include max-breakpoint($tablet-768) {
     @content;
@@ -53,31 +59,37 @@
     @content;
   }
 }
+
 @mixin min-desktop-1800 {
   @include min-breakpoint($desktop-1800) {
     @content;
   }
 }
+
 @mixin min-desktop-1600 {
   @include min-breakpoint($desktop-1600) {
     @content;
   }
 }
+
 @mixin min-desktop-1440 {
   @include min-breakpoint($desktop-1440) {
     @content;
   }
 }
+
 @mixin min-desktop-1280 {
   @include min-breakpoint($desktop-1280) {
     @content;
   }
 }
+
 @mixin min-laptop-1024 {
   @include min-breakpoint($laptop-1024) {
     @content;
   }
 }
+
 @mixin min-tablet-768 {
   @include min-breakpoint($tablet-768) {
     @content;

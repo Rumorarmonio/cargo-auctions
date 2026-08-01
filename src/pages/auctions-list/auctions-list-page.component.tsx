@@ -184,8 +184,10 @@ export function AuctionsListPage() {
               )}
             </Group>
             <SimpleGrid
+              key={search.page}
               cols={{ base: 1, md: 2 }}
               spacing='lg'
+              className={styles.auctionGrid}
             >
               {items.map((auction) => (
                 <AuctionCard
@@ -316,6 +318,7 @@ function AuctionFiltersForm({
       />
       <Group
         align='center'
+        justify='end'
         gap='lg'
       >
         <Checkbox

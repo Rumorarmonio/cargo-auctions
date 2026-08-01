@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { auctionBetsQueryKey } from '@/entities/auction/api/use-auction-bets.query'
 import { auctionDetailQueryKey } from '@/entities/auction/api/use-auction-detail.query'
 import { setBet } from '@/shared/api/generated/auctions/auctions'
 import type { SetBetRequest } from '@/shared/api/generated/model'
@@ -35,6 +36,7 @@ export function useSetBetMutation(auctionUuid: string) {
     },
     onSuccess: async () => {
       await Promise.all([
+        queryClient.invalidateQueries({ queryKey: auctionBetsQueryKey(auctionUuid) }),
         queryClient.invalidateQueries({ queryKey: auctionDetailQueryKey(auctionUuid) }),
         queryClient.invalidateQueries({ queryKey: ['auctions', 'list'] }),
       ])

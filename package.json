@@ -13,7 +13,8 @@
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "stylelint": "stylelint \"src/**/*.{css,scss}\"",
-    "stylelint:fix": "stylelint \"src/**/*.{css,scss}\" --fix"
+    "stylelint:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
+    "test": "vitest run"
   },
   "dependencies": {
     "@mantine/core": "9.5.0",
@@ -55,6 +56,7 @@
     "stylelint-scss": "^7.2.0",
     "typescript": "latest",
     "typescript-eslint": "^8.65.0",
-    "vite": "latest"
+    "vite": "latest",
+    "vitest": "^4.1.10"
   }
 }
