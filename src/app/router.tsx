@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-router'
 import { auctionsListSearchSchema } from '@/entities/auction/model/auctions-list-search'
 import { AuctionDetailPage } from '@/pages/auction-detail/auction-detail-page.component'
+import { AuctionBetPage } from '@/pages/auction-bet/auction-bet-page.component'
 import { AuctionsListPage } from '@/pages/auctions-list/auctions-list-page.component'
 import { AppShell } from './shell/app-shell.component'
 
@@ -39,7 +40,18 @@ const auctionDetailRoute = createRoute({
   component: AuctionDetailPage,
 })
 
-const routeTree = rootRoute.addChildren([indexRoute, auctionsRoute, auctionDetailRoute])
+const auctionBetRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/auctions/$auctionUuid/bet',
+  component: AuctionBetPage,
+})
+
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  auctionsRoute,
+  auctionDetailRoute,
+  auctionBetRoute,
+])
 
 export const router = createRouter({ routeTree })
 

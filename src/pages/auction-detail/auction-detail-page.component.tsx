@@ -1,6 +1,102 @@
-import { Alert, Button, Container, Stack, Text, Title } from '@mantine/core'
+import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  Container,
+  Divider,
+  Group,
+  SimpleGrid,
+  Stack,
+  Table,
+  Text,
+  Title,
+} from '@mantine/core'
 import { Link, useParams } from '@tanstack/react-router'
 import { useAuctionDetailQuery } from '@/entities/auction/api/use-auction-detail.query'
+import type { AuctionShowResponse } from '@/shared/api/generated/model'
+import styles from './auction-detail-page.module.scss'
+
+const labels: Record<string, string> = {
+  Request: 'Заявка',
+  Up: 'Повышение',
+  Down: 'Понижение',
+  FixPrice: 'Фиксированная цена',
+  Planning: 'Планирование',
+  Auction: 'Идут торги',
+  DeterminateWinner: 'Определение победителя',
+  WaitDeal: 'Ожидание сделки',
+  InProgress: 'В работе',
+  Finished: 'Завершён',
+  Stopped: 'Остановлен',
+  Canceled: 'Отменён',
+  PerRoute: 'За рейс',
+  PerKm: 'За километр',
+  CalendarDays: 'календарных дней',
+  WorkDays: 'рабочих дней',
+  Leading: 'Вы лидируете',
+  Losing: 'Ваша ставка перебита',
+  Winner: 'Вы победили',
+  NotParticipating: 'Не участвуете',
+  Confirmed: 'Подтверждена',
+}
+
+const formatDate = (value?: string | null) =>
+  value
+    ? new Intl.DateTimeFormat('ru-RU', {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+      }).format(new Date(value))
+    : '—'
+
+const formatNumber = (value?: number | null, suffix = '') =>
+  value === undefined || value === null
+    ? '—'
+    : `${new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(value)}${suffix}`
+
+const formatPrice = (value?: number | null) =>
+  value === undefined || value === null
+    ? '—'
+    : `${new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(value)} ₽`
+
+const getLabel = (value?: string | null) => (value ? (labels[value] ?? value) : '—')
+
+function DetailCard({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <Card
+      withBorder
+      padding='lg'
+      component='section'
+    >
+      <Title
+        order={2}
+        size='h3'
+        mb='md'
+      >
+        {title}
+      </Title>
+      {children}
+    </Card>
+  )
+}
+
+function DataTable({ rows }: { rows: Array<[string, React.ReactNode]> }) {
+  return (
+    <Table
+      withRowBorders={false}
+      verticalSpacing='xs'
+    >
+      <Table.Tbody>
+        {rows.map(([label, value]) => (
+          <Table.Tr key={label}>
+            <Table.Td className={styles.label}>{label}</Table.Td>
+            <Table.Td>{value}</Table.Td>
+          </Table.Tr>
+        ))}
+      </Table.Tbody>
+    </Table>
+  )
+}
 
 export function AuctionDetailPage() {
   const { auctionUuid } = useParams({ from: '/auctions/$auctionUuid' })
@@ -29,13 +125,301 @@ export function AuctionDetailPage() {
             Не удалось загрузить данные аукциона.
           </Alert>
         )}
-        {query.data && (
-          <>
-            <Title order={1}>{query.data.main.cargo_num}</Title>
-            <Text c='dimmed'>Детальная страница будет расширена на следующем этапе.</Text>
-          </>
-        )}
+        {query.data && <AuctionDetailContent auction={query.data} />}
       </Stack>
     </Container>
+  )
+}
+
+function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
+  const { main, trading, cargo, payment, organizer } = auction
+  const canSetBet = trading.can_set_bet === true
+  const hideCargoPrice = trading.no_view_cargo_price === true
+  const hideBetsHistory = trading.hide_bets_history === true || auction.hide_bets_history === true
+  const hidePointInfo = trading.hide_points_address_and_contacts === true
+
+  return (
+    <Stack gap='lg'>
+      <Group
+        justify='space-between'
+        align='flex-start'
+        gap='md'
+      >
+        <div>
+          <Text
+            size='sm'
+            c='dimmed'
+          >
+            Номер заявки
+          </Text>
+          <Title order={1}>{main.cargo_num ?? 'Аукцион без номера'}</Title>
+          <Text c='dimmed'>Создан {formatDate(main.created_at)}</Text>
+        </div>
+        <Group gap='xs'>
+          <Badge variant='light'>{getLabel(main.auc_type)}</Badge>
+          <Badge
+            color={trading.status === 'Auction' ? 'green' : 'gray'}
+            variant='light'
+          >
+            {getLabel(trading.status)}
+          </Badge>
+        </Group>
+      </Group>
+
+      <Card
+        withBorder
+        padding='lg'
+        className={styles.tradingSummary}
+      >
+        <Group
+          justify='space-between'
+          align='center'
+          gap='md'
+        >
+          <div>
+            <Text
+              size='sm'
+              c='dimmed'
+            >
+              Текущая цена
+            </Text>
+            {hideCargoPrice ? (
+              <Text
+                size='xl'
+                fw={700}
+              >
+                Цена скрыта организатором
+              </Text>
+            ) : (
+              <Text
+                size='xl'
+                fw={700}
+              >
+                {formatPrice(trading.price?.current)}
+              </Text>
+            )}
+            <Text
+              size='sm'
+              c='dimmed'
+            >
+              {getLabel(trading.bid_measurement_type)}
+            </Text>
+          </div>
+          {canSetBet && main.order_uid ? (
+            <Button
+              component={Link}
+              to={`/auctions/${main.order_uid}/bet`}
+            >
+              Сделать ставку
+            </Button>
+          ) : (
+            <Button
+              disabled
+              variant='light'
+            >
+              Ставка недоступна
+            </Button>
+          )}
+        </Group>
+        {!canSetBet && (
+          <Text
+            size='sm'
+            c='dimmed'
+            mt='sm'
+          >
+            Сейчас для вашей организации нельзя сделать ставку.
+          </Text>
+        )}
+      </Card>
+
+      <SimpleGrid
+        cols={{ base: 1, md: 2 }}
+        spacing='lg'
+      >
+        <DetailCard title='Основные данные'>
+          <DataTable
+            rows={[
+              ['Номер заказа', main.order_uid ?? '—'],
+              ['Дата груза', formatDate(main.cargo_date)],
+              ['Тип аукциона', getLabel(main.auc_type)],
+              ['Старт торгов', formatDate(trading.start_time)],
+              ['Окончание торгов', formatDate(trading.stop_time)],
+            ]}
+          />
+        </DetailCard>
+
+        <DetailCard title='Организатор'>
+          <DataTable
+            rows={[
+              ['Организация', organizer.organization_name ?? '—'],
+              ['ИНН', organizer.organization_inn ?? '—'],
+              ['КПП', organizer.organization_kpp ?? '—'],
+              ['Код организации', organizer.infobase_code ?? organizer.subscriber_code ?? '—'],
+            ]}
+          />
+          {auction.contacts.length > 0 && (
+            <>
+              <Divider my='md' />
+              <Text
+                size='sm'
+                fw={600}
+                mb='xs'
+              >
+                Контакты
+              </Text>
+              <Stack gap='xs'>
+                {auction.contacts.map((contact, index) => (
+                  <Text
+                    key={`${contact.uid ?? contact.phone ?? 'contact'}-${index}`}
+                    size='sm'
+                  >
+                    {contact.name ?? 'Контакт'}
+                    {contact.phone ? ` · ${contact.phone}` : ''}
+                    {contact.email ? ` · ${contact.email}` : ''}
+                  </Text>
+                ))}
+              </Stack>
+            </>
+          )}
+        </DetailCard>
+      </SimpleGrid>
+
+      <DetailCard title='Маршрут'>
+        <Stack gap='md'>
+          {auction.routes.map((point, index) => (
+            <div
+              key={`${point.row_num ?? index}-${point.location?.city_name ?? 'point'}`}
+              className={styles.routePoint}
+            >
+              <Group
+                justify='space-between'
+                align='flex-start'
+                gap='md'
+              >
+                <div>
+                  <Badge variant='light'>{getLabel(point.op_type)}</Badge>
+                  <Text
+                    fw={600}
+                    mt='xs'
+                  >
+                    {point.location?.city_full_name ??
+                      point.location?.city_name ??
+                      'Место не указано'}
+                  </Text>
+                  <Text
+                    size='sm'
+                    c='dimmed'
+                  >
+                    {hidePointInfo
+                      ? 'Адрес скрыт'
+                      : (point.location?.loading_address ?? 'Адрес не указан')}
+                  </Text>
+                </div>
+                <Text
+                  size='sm'
+                  c='dimmed'
+                  ta='right'
+                >
+                  {formatDate(point.start_date)}
+                  <br />
+                  до {formatDate(point.end_date)}
+                </Text>
+              </Group>
+              {hidePointInfo ? (
+                <Text
+                  size='sm'
+                  mt='xs'
+                  c='dimmed'
+                >
+                  Контакты скрыты
+                </Text>
+              ) : (
+                <Text
+                  size='sm'
+                  mt='xs'
+                >
+                  {point.contact
+                    ? `Контакт: ${point.contact.name ?? '—'}${point.contact.phone ? ` · ${point.contact.phone}` : ''}`
+                    : 'Контакты не указаны'}
+                </Text>
+              )}
+            </div>
+          ))}
+        </Stack>
+      </DetailCard>
+
+      <SimpleGrid
+        cols={{ base: 1, md: 2 }}
+        spacing='lg'
+      >
+        <DetailCard title='Груз'>
+          <DataTable
+            rows={[
+              ['Стоимость груза', hideCargoPrice ? 'Скрыта организатором' : (cargo.price ?? '—')],
+              ['Расстояние', formatNumber(cargo.distance, ' км')],
+              ['Количество машин', cargo.truck_count ?? '—'],
+              ['Тип кузова', cargo.body_type ?? '—'],
+              [
+                'Температура',
+                cargo.temp_from !== null || cargo.temp_to !== null
+                  ? `${cargo.temp_from ?? '—'}…${cargo.temp_to ?? '—'} °C`
+                  : '—',
+              ],
+              ['Ремни', formatNumber(cargo.belts)],
+              ['Крепления', formatNumber(cargo.conics)],
+              ['Тип требуемого ТС', cargo.car?.type ?? '—'],
+              ['Грузоподъёмность ТС', formatNumber(cargo.car?.weight, ' т')],
+              ['Объём ТС', formatNumber(cargo.car?.volume, ' м³')],
+            ]}
+          />
+        </DetailCard>
+
+        <DetailCard title='Оплата'>
+          <DataTable
+            rows={[
+              ['Форма', payment.form ?? '—'],
+              ['Условие', payment.condition ?? payment.condition_predefined ?? '—'],
+              [
+                'Отсрочка',
+                payment.delay === null || payment.delay === undefined
+                  ? '—'
+                  : `${payment.delay} ${getLabel(payment.delay_type)}`,
+              ],
+              ['Предоплата', payment.prepay ?? '—'],
+              ['Валюта', payment.currency_code ?? '—'],
+            ]}
+          />
+        </DetailCard>
+      </SimpleGrid>
+
+      <DetailCard title='Параметры торгов'>
+        <DataTable
+          rows={[
+            ['Начальная цена', formatPrice(trading.price?.start)],
+            ['Текущая цена', formatPrice(trading.price?.current)],
+            ['Доступная цена', formatPrice(trading.price?.available)],
+            ['Шаг ставки', formatPrice(trading.price?.step)],
+            ['Минимальная цена', formatPrice(trading.price?.min)],
+            ['Продление после ставки', formatNumber(trading.settings?.prolong_after_bet, ' мин')],
+            ['Передача груза', formatNumber(trading.settings?.transmission_time_in, ' ч')],
+            ['Встречные ставки', trading.allow_counter_bets ? 'Разрешены' : 'Запрещены'],
+            ['Статус своей ставки', getLabel(trading.status_mobile)],
+            ['Последняя ставка', formatPrice(trading.your?.last_bet)],
+          ]}
+        />
+        <Divider my='md' />
+        <Text
+          fw={600}
+          mb='xs'
+        >
+          История ставок
+        </Text>
+        <Text c='dimmed'>
+          {hideBetsHistory
+            ? 'История ставок скрыта организатором.'
+            : 'История ставок будет доступна на следующем шаге.'}
+        </Text>
+      </DetailCard>
+    </Stack>
   )
 }
