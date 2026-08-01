@@ -16,8 +16,8 @@ SPA грузовых аукционов на React, TypeScript, Vite, TanStack R
 4. Настроить Orval и сгенерировать API-типы, клиент и TanStack Query hooks — выполнен.
 5. Создать seed-данные или адаптировать fixtures, добавить MSW handlers и in-memory store — выполнен на собственных seed-данных.
 6. Реализовать список аукционов, URL-фильтры, pagination и prefetch detail — выполнен.
-7. Реализовать detail-страницу и отдельную страницу `/auctions/:auctionUuid/bet` — detail-страница и route-заглушка выполнены, форма ставки не начата.
-8. Реализовать историю ставок, mutation ставки, invalidation и toast-сообщения — не начат.
+7. Реализовать detail-страницу и отдельную страницу `/auctions/:auctionUuid/bet` — выполнен.
+8. Реализовать историю ставок, mutation ставки, invalidation и toast-сообщения — mutation, invalidation и notifications для ставки выполнены; история ставок не начата.
 9. Добавить unit-тесты чистой логики и интеграционные тесты MSW handlers — не начат.
 10. Подготовить README и `AI_USAGE.md`, проверить в Chrome — не начат.
 
@@ -27,12 +27,13 @@ SPA грузовых аукционов на React, TypeScript, Vite, TanStack R
 - Этапы 2–4 — выполнены
 - Этап 5 — выполнен
 - Этап 6 — выполнен
-- Этап 7 — detail-страница и route-заглушка выполнены, форма ставки не начата
-- Этапы 8–10 — не начаты
+- Этап 7 — выполнен
+- Этап 8 — mutation ставки, invalidation и notifications выполнены; история ставок не начата
+- Этапы 9–10 — не начаты
 
 ## Следующий этап
 
-Реализовать форму ставки на route `/auctions/:auctionUuid/bet`, затем перейти к истории ставок и mutation.
+Реализовать историю ставок, затем перейти к unit/integration-тестам.
 
 ## Результат этапа 6
 

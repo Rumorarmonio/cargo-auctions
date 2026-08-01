@@ -2,10 +2,13 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { App } from './app/app.component'
 import { verifyMockApi } from './mocks/verify'
+import { configureRussianZodErrors } from './shared/forms/zod-error-map'
 import '@mantine/core/styles.css'
 import '@mantine/dates/styles.css'
 import '@mantine/notifications/styles.css'
 import './shared/styles/main.scss'
+
+configureRussianZodErrors()
 
 async function enableMocking() {
   if (!import.meta.env.DEV) return
