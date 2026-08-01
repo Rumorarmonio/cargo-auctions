@@ -1,4 +1,13 @@
-import { createRootRoute, createRoute, createRouter, Outlet } from '@tanstack/react-router'
+import {
+  createRootRoute,
+  createRoute,
+  createRouter,
+  Outlet,
+  redirect,
+} from '@tanstack/react-router'
+import { auctionsListSearchSchema } from '@/entities/auction/model/auctions-list-search'
+import { AuctionDetailPage } from '@/pages/auction-detail/auction-detail-page.component'
+import { AuctionsListPage } from '@/pages/auctions-list/auctions-list-page.component'
 import { AppShell } from './shell/app-shell.component'
 
 const rootRoute = createRootRoute({
@@ -12,10 +21,25 @@ const rootRoute = createRootRoute({
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
-  component: () => <div>Список аукционов будет добавлен следующим этапом.</div>,
+  beforeLoad: () => {
+    throw redirect({ to: '/auctions', search: { page: 1, per_page: 2 } })
+  },
 })
 
-const routeTree = rootRoute.addChildren([indexRoute])
+const auctionsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/auctions',
+  validateSearch: auctionsListSearchSchema,
+  component: AuctionsListPage,
+})
+
+const auctionDetailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/auctions/$auctionUuid',
+  component: AuctionDetailPage,
+})
+
+const routeTree = rootRoute.addChildren([indexRoute, auctionsRoute, auctionDetailRoute])
 
 export const router = createRouter({ routeTree })
 

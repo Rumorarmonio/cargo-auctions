@@ -30,8 +30,14 @@ export async function verifyMockApi() {
     })
 
     assertCheck(list.status === 200, `Список вернул HTTP ${list.status}`)
-    assertCheck(Array.isArray((list.body as { data?: unknown[] })?.data), 'Список не содержит data[]')
-    assertCheck((list.body as { meta?: { total?: number } })?.meta?.total === 4, 'Список содержит не 4 seed-аукциона')
+    assertCheck(
+      Array.isArray((list.body as { data?: unknown[] })?.data),
+      'Список не содержит data[]',
+    )
+    assertCheck(
+      (list.body as { meta?: { total?: number } })?.meta?.total === 4,
+      'Список содержит не 4 seed-аукциона',
+    )
     assertCheck(detail.status === 200, `Detail вернул HTTP ${detail.status}`)
     assertCheck(bets.status === 200, `История ставок вернула HTTP ${bets.status}`)
     assertCheck(invalidBet.status === 422, `Невалидная ставка вернула HTTP ${invalidBet.status}`)

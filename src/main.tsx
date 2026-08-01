@@ -2,6 +2,9 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { App } from './app/app.component'
 import { verifyMockApi } from './mocks/verify'
+import '@mantine/core/styles.css'
+import '@mantine/dates/styles.css'
+import '@mantine/notifications/styles.css'
 import './shared/styles/main.scss'
 
 async function enableMocking() {

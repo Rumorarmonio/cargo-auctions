@@ -3,7 +3,16 @@ import { auctionFixtures, type AuctionFixture } from './fixtures'
 
 const fixtures = structuredClone(auctionFixtures)
 
-const auctionStatuses = ['Planning', 'Auction', 'DeterminateWinner', 'WaitDeal', 'InProgress', 'Finished', 'Stopped', 'Canceled']
+const auctionStatuses = [
+  'Planning',
+  'Auction',
+  'DeterminateWinner',
+  'WaitDeal',
+  'InProgress',
+  'Finished',
+  'Stopped',
+  'Canceled',
+]
 const tradingStatuses = ['NotParticipating', 'Leading', 'Losing', 'Winner', 'Confirmed']
 
 function matchesNumberRange(value: number | undefined, from: unknown, to: unknown) {
@@ -14,8 +23,16 @@ function matchesNumberRange(value: number | undefined, from: unknown, to: unknow
 
 function matchesDateRange(value: string | undefined, from: unknown, to: unknown) {
   if (!value) return false
-  if (from !== undefined && from !== null && value < String(from)) return false
-  if (to !== undefined && to !== null && value > String(to)) return false
+  const valueTimestamp = Date.parse(value)
+  if (Number.isNaN(valueTimestamp)) return false
+  if (from !== undefined && from !== null) {
+    const fromTimestamp = Date.parse(String(from))
+    if (!Number.isNaN(fromTimestamp) && valueTimestamp < fromTimestamp) return false
+  }
+  if (to !== undefined && to !== null) {
+    const toTimestamp = Date.parse(String(to))
+    if (!Number.isNaN(toTimestamp) && valueTimestamp > toTimestamp) return false
+  }
   return true
 }
 
@@ -23,12 +40,16 @@ export const mockAuctionStore = {
   list(request: { page?: number; per_page?: number; [key: string]: unknown } = {}) {
     let items = fixtures
     const statuses = Array.isArray(request.statuses) ? (request.statuses as number[]) : undefined
-    const auctionTypes = Array.isArray(request.auc_type) ? (request.auc_type as string[]) : undefined
+    const auctionTypes = Array.isArray(request.auc_type)
+      ? (request.auc_type as string[])
+      : undefined
     const userStatuses = Array.isArray(request.status) ? (request.status as string[]) : undefined
     const mobileStatuses = Array.isArray(request.mobile_statuses)
       ? (request.mobile_statuses as number[])
       : undefined
-    const bodyTypes = Array.isArray(request.body_types) ? (request.body_types as string[]) : undefined
+    const bodyTypes = Array.isArray(request.body_types)
+      ? (request.body_types as string[])
+      : undefined
 
     if (request.cargo_num) {
       const value = String(request.cargo_num).toLowerCase()
@@ -57,11 +78,15 @@ export const mockAuctionStore = {
       items = items.filter(({ listItem }) => auctionTypes.includes(listItem.main?.auc_type ?? ''))
     }
     if (userStatuses) {
-      items = items.filter(({ listItem }) => userStatuses.includes(listItem.trading?.status_mobile ?? ''))
+      items = items.filter(({ listItem }) =>
+        userStatuses.includes(listItem.trading?.status_mobile ?? ''),
+      )
     }
     if (mobileStatuses) {
       items = items.filter(({ listItem }) =>
-        mobileStatuses.some((status) => tradingStatuses[Number(status) - 1] === listItem.trading?.status_mobile),
+        mobileStatuses.some(
+          (status) => tradingStatuses[Number(status) - 1] === listItem.trading?.status_mobile,
+        ),
       )
     }
     if (bodyTypes) {
@@ -74,25 +99,51 @@ export const mockAuctionStore = {
       items = items.filter(({ listItem }) => listItem.trading?.is_favorite)
     }
     if (request.load_date_from !== undefined || request.load_date_to !== undefined) {
-      items = items.filter(({ listItem }) => matchesDateRange(listItem.route?.load?.date, request.load_date_from, request.load_date_to))
+      items = items.filter(({ listItem }) =>
+        matchesDateRange(listItem.route?.load?.date, request.load_date_from, request.load_date_to),
+      )
     }
     if (request.unload_date_from !== undefined || request.unload_date_to !== undefined) {
-      items = items.filter(({ listItem }) => matchesDateRange(listItem.route?.unload?.date, request.unload_date_from, request.unload_date_to))
+      items = items.filter(({ listItem }) =>
+        matchesDateRange(
+          listItem.route?.unload?.date,
+          request.unload_date_from,
+          request.unload_date_to,
+        ),
+      )
     }
     if (request.create_date_from !== undefined || request.create_date_to !== undefined) {
-      items = items.filter(({ listItem }) => matchesDateRange(listItem.main?.created_at, request.create_date_from, request.create_date_to))
+      items = items.filter(({ listItem }) =>
+        matchesDateRange(
+          listItem.main?.created_at,
+          request.create_date_from,
+          request.create_date_to,
+        ),
+      )
     }
     if (request.start_time_from !== undefined || request.start_time_to !== undefined) {
-      items = items.filter(({ listItem }) => matchesDateRange(listItem.trading?.start_time, request.start_time_from, request.start_time_to))
+      items = items.filter(({ listItem }) =>
+        matchesDateRange(
+          listItem.trading?.start_time,
+          request.start_time_from,
+          request.start_time_to,
+        ),
+      )
     }
     if (request.stop_time_from !== undefined || request.stop_time_to !== undefined) {
-      items = items.filter(({ listItem }) => matchesDateRange(listItem.trading?.stop_time, request.stop_time_from, request.stop_time_to))
+      items = items.filter(({ listItem }) =>
+        matchesDateRange(listItem.trading?.stop_time, request.stop_time_from, request.stop_time_to),
+      )
     }
     if (request.weight_from !== undefined || request.weight_to !== undefined) {
-      items = items.filter(({ listItem }) => matchesNumberRange(listItem.cargo?.weight, request.weight_from, request.weight_to))
+      items = items.filter(({ listItem }) =>
+        matchesNumberRange(listItem.cargo?.weight, request.weight_from, request.weight_to),
+      )
     }
     if (request.volume_from !== undefined || request.volume_to !== undefined) {
-      items = items.filter(({ listItem }) => matchesNumberRange(listItem.cargo?.volume, request.volume_from, request.volume_to))
+      items = items.filter(({ listItem }) =>
+        matchesNumberRange(listItem.cargo?.volume, request.volume_from, request.volume_to),
+      )
     }
     if (request.is_available === true)
       items = items.filter(({ listItem }) => listItem.trading?.is_available)
@@ -113,7 +164,9 @@ export const mockAuctionStore = {
 
     if (request.is_oldest === true) {
       items = [...items].sort((left, right) =>
-        String(left.listItem.main?.created_at).localeCompare(String(right.listItem.main?.created_at)),
+        String(left.listItem.main?.created_at).localeCompare(
+          String(right.listItem.main?.created_at),
+        ),
       )
     }
 
@@ -128,7 +181,10 @@ export const mockAuctionStore = {
         from: items.slice(start, start + perPage).length === 0 ? 0 : start + 1,
         last_page: Math.max(1, Math.ceil(items.length / perPage)),
         per_page: perPage,
-        to: items.slice(start, start + perPage).length === 0 ? 0 : Math.min(start + perPage, items.length),
+        to:
+          items.slice(start, start + perPage).length === 0
+            ? 0
+            : Math.min(start + perPage, items.length),
         total: items.length,
       },
     }

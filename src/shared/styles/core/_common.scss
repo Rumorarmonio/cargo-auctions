@@ -26,6 +26,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.mantine-Button-root {
+  @include transition((background-color, border-color, color, box-shadow));
+}
+
 .container {
   @include container($with-padding: false);
 
