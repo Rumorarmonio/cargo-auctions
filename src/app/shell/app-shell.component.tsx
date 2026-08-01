@@ -1,8 +1,11 @@
 import type { ReactNode } from 'react'
 import { AppShell as MantineAppShell, Container, Group, Text, Title } from '@mantine/core'
+import { useLocation } from '@tanstack/react-router'
 import styles from './app-shell.module.scss'
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const location = useLocation()
+
   return (
     <MantineAppShell header={{ height: 64 }}>
       <MantineAppShell.Header>
@@ -26,7 +29,12 @@ export function AppShell({ children }: { children: ReactNode }) {
           size='xl'
           py='xl'
         >
-          {children}
+          <div
+            key={location.pathname}
+            className={styles.content}
+          >
+            {children}
+          </div>
         </Container>
       </MantineAppShell.Main>
     </MantineAppShell>
