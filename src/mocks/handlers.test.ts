@@ -29,6 +29,17 @@ describe('MSW auction handlers', () => {
       meta: { total: 5, current_page: 1, per_page: 2 },
     })
     expect(body.data).toHaveLength(2)
+
+    const allAuctions = await request('/auctions/list', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ page: 1, per_page: 50 }),
+    })
+    const uuids = allAuctions.body.data.map(
+      (auction: { main?: { order_uid?: string } }) => auction.main?.order_uid,
+    )
+
+    expect(new Set(uuids).size).toBe(5)
   })
 
   it('returns detail and a not-found response', async () => {

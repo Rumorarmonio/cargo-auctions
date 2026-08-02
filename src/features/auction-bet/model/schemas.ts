@@ -13,15 +13,31 @@ export function createAuctionBetSchema(
   max?: number | null,
   step?: number | null,
 ) {
-  let price = fields.price
+  return z.object({ price: fields.price }).superRefine(({ price }, context) => {
+    if (min !== null && min !== undefined && price < min) {
+      context.addIssue({
+        code: 'custom',
+        path: ['price'],
+        message: `Цена не может быть ниже ${min}`,
+      })
+      return
+    }
 
-  if (min !== null && min !== undefined) price = price.min(min, `Цена не может быть ниже ${min}`)
-  if (max !== null && max !== undefined) price = price.max(max, `Цена не может быть выше ${max}`)
-  if (step !== null && step !== undefined && step > 0) {
-    price = price.refine((value) => isStepAligned(value, step), {
-      message: `Цена должна быть кратна шагу ${step}`,
-    })
-  }
+    if (max !== null && max !== undefined && price > max) {
+      context.addIssue({
+        code: 'custom',
+        path: ['price'],
+        message: `Цена не может быть выше ${max}`,
+      })
+      return
+    }
 
-  return z.object({ price })
+    if (step !== null && step !== undefined && step > 0 && !isStepAligned(price, step)) {
+      context.addIssue({
+        code: 'custom',
+        path: ['price'],
+        message: `Цена должна быть кратна шагу ${step}`,
+      })
+    }
+  })
 }

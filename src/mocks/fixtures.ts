@@ -77,7 +77,8 @@ const basePayment = {
 const createDetail = (
   uuid: string,
   overrides: Partial<AuctionShowResponse> = {},
-): AuctionShowResponse => ({
+): AuctionShowResponse => {
+  const detail: AuctionShowResponse = {
   main: {
     id: 1001,
     cargo_num: 'CA-2026-001',
@@ -185,8 +186,14 @@ const createDetail = (
     },
   ],
   hide_bets_history: false,
-  ...overrides,
-})
+    ...overrides,
+  }
+
+  return {
+    ...detail,
+    main: { ...detail.main, order_uid: uuid },
+  }
+}
 
 const createListItem = (detail: AuctionShowResponse): AuctionListItem => ({
   main: {

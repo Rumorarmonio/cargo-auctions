@@ -9,9 +9,16 @@ describe('createAuctionBetSchema', () => {
   })
 
   it('rejects prices outside the range or step', () => {
-    expect(schema.safeParse({ price: 99000 }).success).toBe(false)
-    expect(schema.safeParse({ price: 145001 }).success).toBe(false)
-    expect(schema.safeParse({ price: 132500 }).success).toBe(false)
+    expect(schema.safeParse({ price: 99000 }).error?.issues[0]?.message).toBe(
+      'Цена не может быть ниже 100000',
+    )
+    expect(schema.safeParse({ price: 0 }).success).toBe(false)
+    expect(schema.safeParse({ price: 145001 }).error?.issues[0]?.message).toBe(
+      'Цена не может быть выше 145000',
+    )
+    expect(schema.safeParse({ price: 132500 }).error?.issues[0]?.message).toBe(
+      'Цена должна быть кратна шагу 1000',
+    )
   })
 
   it('allows a decimal value when it is aligned to a decimal step', () => {

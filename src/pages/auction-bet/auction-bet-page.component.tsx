@@ -131,6 +131,7 @@ export function AuctionBetPage() {
                         {...field}
                         label='Цена ставки'
                         description={`Минимум: ${tradingPrice.min ?? '—'} · Максимум: ${tradingPrice.max ?? '—'} · Шаг: ${tradingPrice.step ?? '—'}`}
+                        clampBehavior='none'
                         min={tradingPrice.min ?? undefined}
                         max={tradingPrice.max ?? undefined}
                         step={tradingPrice.step ?? undefined}

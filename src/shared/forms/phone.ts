@@ -4,6 +4,12 @@ const RU_MOBILE_PATTERN = /^9\d{9}$/
 const RU_TOLL_FREE_PATTERN = /^8(?:0[04]|108\d{3})\d{7}$/
 const RU_PERSONAL_PATTERN = /^808\d{7}$/
 
+export function normalizePhoneForHref(value: string): string {
+  const digitsOnly = value.replace(/\D/g, '')
+
+  return value.trim().startsWith('+') ? `+${digitsOnly}` : digitsOnly
+}
+
 function normalizeRussianPhone(value: string): string | null {
   const digitsOnly = value.replace(/\D/g, '')
 

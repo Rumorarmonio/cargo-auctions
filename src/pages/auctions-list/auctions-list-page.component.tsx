@@ -331,6 +331,31 @@ function AuctionFiltersForm({
           checked={filters.is_bidder}
           onChange={(event) => update({ is_bidder: event.currentTarget.checked })}
         />
+        <Button
+          type='button'
+          variant='subtle'
+          onClick={() => {
+            const resetFilters: AuctionListFilters = {
+              cargo_num: '',
+              status: undefined,
+              statuses: [],
+              auc_type: undefined,
+              auc_types: [],
+              load_city: undefined,
+              unload_city: undefined,
+              load_date_from: '',
+              load_date_to: '',
+              is_available: false,
+              is_bidder: false,
+              current_price_from: undefined,
+              current_price_to: undefined,
+            }
+            setFilters(resetFilters)
+            onApply(resetFilters)
+          }}
+        >
+          Сбросить
+        </Button>
         <Button type='submit'>Применить</Button>
       </Group>
     </form>

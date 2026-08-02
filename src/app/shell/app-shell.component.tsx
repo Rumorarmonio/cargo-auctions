@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { AppShell as MantineAppShell, Container, Group, Text, Title } from '@mantine/core'
-import { useLocation } from '@tanstack/react-router'
+import { Link, useLocation } from '@tanstack/react-router'
 import styles from './app-shell.module.scss'
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -14,7 +14,14 @@ export function AppShell({ children }: { children: ReactNode }) {
           className={styles.header}
         >
           <Group justify='space-between'>
-            <Title order={3}>Cargo Auctions</Title>
+            <Title
+              order={3}
+              c='inherit'
+              td='none'
+              renderRoot={(props) => <Link {...props} to='/' />}
+            >
+              Cargo Auctions
+            </Title>
             <Text
               c='dimmed'
               size='sm'

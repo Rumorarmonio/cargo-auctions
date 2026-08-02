@@ -1,5 +1,6 @@
 import {
   Alert,
+  Anchor,
   Badge,
   Button,
   Card,
@@ -16,6 +17,7 @@ import { Link, useParams } from '@tanstack/react-router'
 import { useAuctionBetsQuery } from '@/entities/auction/api/use-auction-bets.query'
 import { useAuctionDetailQuery } from '@/entities/auction/api/use-auction-detail.query'
 import type { AuctionShowResponse, BetItem } from '@/shared/api/generated/model'
+import { normalizePhoneForHref } from '@/shared/forms/phone'
 import styles from './auction-detail-page.module.scss'
 
 const labels: Record<string, string> = {
@@ -96,6 +98,34 @@ function DataTable({ rows }: { rows: Array<[string, React.ReactNode]> }) {
         ))}
       </Table.Tbody>
     </Table>
+  )
+}
+
+type ContactLinkData = {
+  name?: string | null
+  phone?: string | null
+  email?: string | null
+}
+
+function ContactLinks({ contact }: { contact: ContactLinkData }) {
+  return (
+    <>
+      {contact.name ?? 'Контакт'}
+      {contact.phone && (
+        <>
+          {' · '}
+          <Anchor href={`tel:${normalizePhoneForHref(contact.phone)}`}>
+            {contact.phone}
+          </Anchor>
+        </>
+      )}
+      {contact.email && (
+        <>
+          {' · '}
+          <Anchor href={`mailto:${contact.email}`}>{contact.email}</Anchor>
+        </>
+      )}
+    </>
   )
 }
 
@@ -222,6 +252,7 @@ export function AuctionDetailPage() {
 function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
   const { main, trading, cargo, payment, organizer } = auction
   const canSetBet = trading.can_set_bet === true
+  const hasBet = trading.your?.bet === true
   const hideCargoPrice = trading.no_view_cargo_price === true
   const hideBetsHistory = trading.hide_bets_history === true || auction.hide_bets_history === true
   const hidePointInfo = trading.hide_points_address_and_contacts === true
@@ -298,7 +329,7 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
               component={Link}
               to={`/auctions/${main.order_uid}/bet`}
             >
-              Сделать ставку
+              {hasBet ? 'Изменить ставку' : 'Сделать ставку'}
             </Button>
           ) : (
             <Button
@@ -361,9 +392,7 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
                     key={`${contact.uid ?? contact.phone ?? 'contact'}-${index}`}
                     size='sm'
                   >
-                    {contact.name ?? 'Контакт'}
-                    {contact.phone ? ` · ${contact.phone}` : ''}
-                    {contact.email ? ` · ${contact.email}` : ''}
+                    <ContactLinks contact={contact} />
                   </Text>
                 ))}
               </Stack>
@@ -426,9 +455,14 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
                   size='sm'
                   mt='xs'
                 >
-                  {point.contact
-                    ? `Контакт: ${point.contact.name ?? '—'}${point.contact.phone ? ` · ${point.contact.phone}` : ''}`
-                    : 'Контакты не указаны'}
+                  {point.contact ? (
+                    <>
+                      {'Контакт: '}
+                      <ContactLinks contact={point.contact} />
+                    </>
+                  ) : (
+                    'Контакты не указаны'
+                  )}
                 </Text>
               )}
             </div>
