@@ -1,8 +1,8 @@
 import { Alert, Stack, Text } from '@mantine/core'
-import type { StatusModalParams } from '@/app/modals/modal.types'
+import type { ModalContentProps } from '@/app/modals/modal.types'
 
-export function StatusModal({ params }: { params?: unknown }) {
-  const status = params as StatusModalParams | undefined
+export function StatusModal({ params }: ModalContentProps<'status'>) {
+  const status = params
   const color =
     status?.variant === 'error' ? 'red' : status?.variant === 'success' ? 'green' : 'blue'
 

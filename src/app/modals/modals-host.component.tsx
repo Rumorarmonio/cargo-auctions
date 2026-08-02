@@ -3,20 +3,51 @@ import { Drawer, Modal } from '@mantine/core'
 import type { MantineTransition } from '@mantine/core'
 import { useModalStore } from './modal.store'
 import { modalDefinitions } from './modal.registry'
-import { AuctionFiltersForm } from '@/features/auction-filters/ui/auction-filters-form.component'
+import { AuctionFiltersModalContent } from '@/features/auction-filters/ui/auction-filters-modal-content.component'
 import { ModalDemoCenter } from '@/widgets/modal-demo/ui/modal-demo-center.component'
 import { ModalDemoSide } from '@/widgets/modal-demo/ui/modal-demo-side.component'
 import { StatusModal } from '@/widgets/modal-demo/ui/status-modal.component'
-import type { ModalId } from './modal.types'
+import type { ModalContentMap, ModalId, ModalStateById } from './modal.types'
 import styles from './modals-host.module.scss'
 
-const contentById = {
+const contentById: ModalContentMap = {
   demoLeft: ModalDemoSide,
   demoCenter: ModalDemoCenter,
   demoRight: ModalDemoSide,
   status: StatusModal,
-  auctionFilters: AuctionFiltersForm,
-} as const
+  auctionFilters: AuctionFiltersModalContent,
+}
+
+function assertNever(value: never): never {
+  throw new Error(`Неизвестный идентификатор модального окна: ${value}`)
+}
+
+function renderModalContent(id: ModalId, byId: ModalStateById, key: string) {
+  switch (id) {
+    case 'demoLeft':
+      return <contentById.demoLeft key={key} />
+    case 'demoCenter':
+      return <contentById.demoCenter key={key} />
+    case 'demoRight':
+      return <contentById.demoRight key={key} />
+    case 'status':
+      return (
+        <contentById.status
+          key={key}
+          params={byId.status?.params}
+        />
+      )
+    case 'auctionFilters':
+      return (
+        <contentById.auctionFilters
+          key={key}
+          params={byId.auctionFilters?.params}
+        />
+      )
+    default:
+      return assertNever(id)
+  }
+}
 
 export function ModalsHost() {
   const byId = useModalStore((state) => state.byId)
@@ -52,13 +83,10 @@ export function ModalsHost() {
       {modalDefinitions.map((definition) => {
         const state = byId[definition.id]
 
-        const Content = contentById[definition.id]
-        const content = (
-          <Content
-            key={`${definition.id}-${JSON.stringify(state?.params ?? null)}`}
-            modalId={definition.id as ModalId}
-            params={state?.params}
-          />
+        const content = renderModalContent(
+          definition.id,
+          byId,
+          `${definition.id}-${JSON.stringify(state?.params ?? null)}`,
         )
         const closeSequence = state?.closeSequence
         const transition: MantineTransition =

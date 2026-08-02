@@ -1,15 +1,15 @@
 import { create } from 'zustand'
-import type { ModalId, ModalParams, ModalParamsFor } from './modal.types'
+import type { ModalId, ModalParams, ModalParamsFor, ModalStateById } from './modal.types'
 
-type ModalState = {
+export type ModalState<T extends ModalId = ModalId> = {
   isOpen: boolean
   isClosing: boolean
   closeSequence: number
-  params?: ModalParams
+  params?: ModalParamsFor<T>
 }
 
 type ModalStore = {
-  byId: Partial<Record<ModalId, ModalState>>
+  byId: ModalStateById
   openModal: <T extends ModalId>(id: T, params?: ModalParamsFor<T>) => void
   closeModal: (id: ModalId) => void
   finishClosing: (id: ModalId, closeSequence: number) => void
@@ -72,7 +72,7 @@ export const useModalStore = create<ModalStore>((set) => ({
               }
             : modal,
         ]),
-      ) as Partial<Record<ModalId, ModalState>>,
+      ) as ModalStateById,
     })),
 }))
 

@@ -1,4 +1,4 @@
-import type { ModalDefinition } from './modal.types'
+import type { AnyModalDefinition } from './modal.types'
 
 const sideDrawerWidth = 'min(100% - 2rem, 42rem)'
 
@@ -35,4 +35,4 @@ export const modalDefinitions = [
     width: 'min(100% - 1rem, 32rem)',
     mobileFullWidth: true,
   },
-] as const satisfies readonly ModalDefinition[]
+] as const satisfies readonly AnyModalDefinition[]

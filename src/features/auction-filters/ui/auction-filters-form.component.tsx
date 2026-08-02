@@ -1,24 +1,16 @@
 import { useState } from 'react'
 import { Button, Checkbox, Group, NumberInput, Select, TextInput } from '@mantine/core'
 import { DateInput } from '@mantine/dates'
+import {
+  cityOptions,
+  createEmptyAuctionListFilters,
+  mergeAuctionListFilters,
+  statusOptions,
+  typeOptions,
+} from '../model/filters'
 import type { AuctionListFilters } from '../model/types'
 import styles from './auction-filters-form.module.scss'
 
-const cityOptions = ['Новосибирск', 'Омск', 'Томск', 'Кемерово'].map((city) => ({
-  value: city,
-  label: city,
-}))
-const statusOptions = [
-  { value: '2', label: 'Идут торги' },
-  { value: '1', label: 'Планирование' },
-  { value: '6', label: 'Завершён' },
-]
-const typeOptions = [
-  { value: 'Request', label: 'Заявка' },
-  { value: 'Up', label: 'Повышение' },
-  { value: 'Down', label: 'Понижение' },
-  { value: 'FixPrice', label: 'Фиксированная цена' },
-]
 const dropdownTransition = {
   transition: {
     common: { transformOrigin: 'top' },
@@ -30,50 +22,24 @@ const dropdownTransition = {
 } as const
 const selectComboboxProps = { transitionProps: dropdownTransition }
 
-const emptyFilters: AuctionListFilters = {
-  cargo_num: '',
-  status: undefined,
-  statuses: [],
-  auc_type: undefined,
-  auc_types: [],
-  load_city: undefined,
-  unload_city: undefined,
-  load_date_from: '',
-  load_date_to: '',
-  is_available: false,
-  is_bidder: false,
-  current_price_from: undefined,
-  current_price_to: undefined,
-}
-
 export function AuctionFiltersForm({
   initialFilters,
   onApply,
-  modalId,
-  params,
 }: {
-  initialFilters?: AuctionListFilters
-  onApply?: (filters: AuctionListFilters) => void
-  modalId?: string
-  params?: unknown
+  initialFilters: AuctionListFilters
+  onApply: (filters: AuctionListFilters) => void
 }) {
-  const modalParams =
-    (params as { initialFilters?: AuctionListFilters; onApply?: typeof onApply } | undefined) ?? {}
-  const [filters, setFilters] = useState(
-    initialFilters ?? modalParams.initialFilters ?? emptyFilters,
-  )
+  const [filters, setFilters] = useState(initialFilters)
 
-  const apply = onApply ?? modalParams.onApply
   const update = (next: Partial<AuctionListFilters>) =>
-    setFilters((current) => ({ ...current, ...next }))
+    setFilters((current) => mergeAuctionListFilters(current, next))
 
   return (
     <form
       className={styles.filters}
-      data-modal-id={modalId}
       onSubmit={(event) => {
         event.preventDefault()
-        apply?.(filters)
+        onApply(filters)
       }}
     >
       <TextInput
@@ -172,9 +138,9 @@ export function AuctionFiltersForm({
           type='button'
           variant='subtle'
           onClick={() => {
-            const resetFilters = emptyFilters
+            const resetFilters = createEmptyAuctionListFilters()
             setFilters(resetFilters)
-            apply?.(resetFilters)
+            onApply(resetFilters)
           }}
         >
           Сбросить
