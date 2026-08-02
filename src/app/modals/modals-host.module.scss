@@ -1,0 +1,5 @@
+.mobileFullWidthDrawer {
+  @include mobile-767 {
+    --drawer-size: 100vw !important;
+  }
+}

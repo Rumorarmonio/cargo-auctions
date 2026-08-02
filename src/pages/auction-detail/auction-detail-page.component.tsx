@@ -114,9 +114,7 @@ function ContactLinks({ contact }: { contact: ContactLinkData }) {
       {contact.phone && (
         <>
           {' · '}
-          <Anchor href={`tel:${normalizePhoneForHref(contact.phone)}`}>
-            {contact.phone}
-          </Anchor>
+          <Anchor href={`tel:${normalizePhoneForHref(contact.phone)}`}>{contact.phone}</Anchor>
         </>
       )}
       {contact.email && (

@@ -1,7 +1,18 @@
+.headerBar {
+  position: sticky !important;
+  z-index: 100;
+  top: 0;
+}
+
 .header {
   display: flex;
   align-items: center;
   height: 100%;
+}
+
+.main {
+  padding-top: 0 !important;
+  min-height: calc(100dvh - var(--app-shell-header-height, 4rem)) !important;
 }
 
 .content {

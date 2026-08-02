@@ -10,7 +10,7 @@ SPA для работы с грузовыми аукционами по OpenAPI-
 
 ## Текущее состояние
 
-Есть тестовое задание в PDF, OpenAPI JSON-схема, `SPEC.md`, `NOTES.md` и `PLAN.md`. Bootstrap и базовый mock-слой готовы. Готовые mock fixtures от HR не получены, поэтому используются собственные seed-данные.
+Есть тестовое задание в PDF, OpenAPI JSON-схема, `SPEC.md`, `NOTES.md` и `PLAN.md`. Bootstrap и базовый mock-слой готовы. Моковые данные сгенерированы по OpenAPI-спеке.
 
 ## Ключевые решения
 
@@ -35,14 +35,13 @@ SPA для работы с грузовыми аукционами по OpenAPI-
 
 - Проанализирован PDF и OpenAPI-контракт.
 - Создан `SPEC.md` с требованиями, решениями и открытыми вопросами.
-- Зафиксировано, что готовые fixtures от HR пока не получены.
+- Моковые данные сгенерированы по OpenAPI-спеке и покрывают необходимые сценарии.
 - Выполнен bootstrap React/Vite/TypeScript, базовые providers, SCSS Modules, Zustand, FSD-каталоги и Orval-generated API-код.
 - Добавлены seed-данные для пяти сценариев, in-memory MSW-store, handlers четырёх API endpoint’ов и browser worker для dev-режима.
 - Добавлена dev-only smoke-проверка mock API с assertions по основным ответам и поддержкой фильтрации списка по ключевым параметрам контракта.
 
 ## Текущие проблемы / открытые вопросы
 
-- Ответ HR о fixtures остаётся внешним открытым вопросом и не блокирует реализацию.
 - Текущие seed-данные покрывают пагинацию, скрытую историю ставок, недоступную ставку, победившие и отменённые ставки, пустые контакты и перевозчика, длинный маршрут, несколько машин и `null`-значения.
 - Этап списка аукционов завершён: добавлены URL-фильтры через Zod, карточки, loading/empty/error, пагинация, prefetch detail и route-заглушка detail.
 - После review подключён `@mantine/dates`, URL search сохраняет неизвестные параметры, а mock-фильтрация дат сравнивает timestamps.
@@ -53,6 +52,14 @@ SPA для работы с грузовыми аукционами по OpenAPI-
 - После review detail показывает доступную цену, требования к ТС и свою ставку; цена груза скрывается отдельно от торговых цен.
 - Страница `/auctions/:auctionUuid/bet` загружает detail, проверяет `can_set_bet` и валидирует цену через React Hook Form + Zod с учётом `min/max/step`; feature-hook отправляет `POST /auctions/:auctionUuid/bets` и инвалидирует detail/list, страница показывает success/error notifications.
 - Для Zod 4 подключена русская глобальная карта ошибок с возможностью локально переопределять сообщения на уровне схем.
+- Добавлена typed-модальная инфраструктура на Zustand в `src/app/modals`: registry, actions, host и состояния с корректным завершением exit-анимации Mantine.
+- Демо-кнопки модалок размещены под header; inline-фильтры вынесены в `features/auction-filters`, а на mobile открываются в правом Drawer.
+- В modal host модалки постоянно присутствуют в закрытом состоянии для корректной enter-анимации; при открытии принудительно блокируется scroll `html/body` и скрывается scrollbar.
+- При блокировке scroll modal host компенсирует ширину исчезнувшего scrollbar через CSS-переменную `--modal-scrollbar-width` и `body.padding-right`, предотвращая layout shift.
+- Для sticky header высота `AppShell.Main` ограничена `calc(100dvh - header-height)`, чтобы header не добавлял лишний viewport к минимальной высоте страницы.
+- Demo Drawer слева и справа на mobile получают ширину `100vw` через registry-флаг и переопределение корневой переменной Mantine `--drawer-size`.
+- Для защиты от устаревшего callback exit-анимации modal store использует `closeSequence`; старый callback не удаляет повторно открытую модалку.
+- Удалён неиспользуемый старый `shared/store/ui.store.ts`; `getModalParams` и `closeAllModals` сохранены как заготовки публичного modal API.
 - Добавлены unit-тесты преобразования фильтров и схемы ставки, а также интеграционные тесты MSW handlers для списка, detail, истории ставок и POST ставки; запуск выполняется через `npm test`.
 - После review MSW history handler учитывает `all=true`, а интеграционные тесты сбрасывают in-memory store перед каждым сценарием.
 
