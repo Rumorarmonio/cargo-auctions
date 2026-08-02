@@ -20,6 +20,8 @@ const auctionLabels: Record<string, string> = {
   Winner: 'Вы победили',
   NotParticipating: 'Не участвуете',
   Confirmed: 'Подтверждена',
+  Loading: 'Погрузка',
+  Unloading: 'Выгрузка',
 }
 
 export function getAuctionLabel(value?: string | null) {

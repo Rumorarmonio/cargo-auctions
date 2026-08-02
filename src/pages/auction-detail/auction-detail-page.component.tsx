@@ -1,6 +1,5 @@
 import {
   Alert,
-  Anchor,
   Badge,
   Button,
   Card,
@@ -17,73 +16,12 @@ import { Link, useParams } from '@tanstack/react-router'
 import { useAuctionBetsQuery } from '@/entities/auction/api/use-auction-bets.query'
 import { useAuctionDetailQuery } from '@/entities/auction/api/use-auction-detail.query'
 import { getAuctionLabel } from '@/entities/auction/model/auction-labels'
+import { AuctionContactLinks } from '@/entities/auction/ui/auction-contact-links.component'
+import { AuctionDataTable } from '@/entities/auction/ui/auction-data-table.component'
+import { AuctionDetailSection } from '@/entities/auction/ui/auction-detail-section.component'
 import type { AuctionShowResponse, BetItem } from '@/shared/api/generated/model'
-import { normalizePhoneForHref } from '@/shared/forms/phone'
 import { formatDate, formatNumber, formatPrice } from '@/shared/lib/formatters'
 import styles from './auction-detail-page.module.scss'
-
-function DetailCard({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <Card
-      withBorder
-      padding='lg'
-      component='section'
-    >
-      <Title
-        order={2}
-        size='h3'
-        mb='md'
-      >
-        {title}
-      </Title>
-      {children}
-    </Card>
-  )
-}
-
-function DataTable({ rows }: { rows: Array<[string, React.ReactNode]> }) {
-  return (
-    <Table
-      withRowBorders={false}
-      verticalSpacing='xs'
-    >
-      <Table.Tbody>
-        {rows.map(([label, value]) => (
-          <Table.Tr key={label}>
-            <Table.Td className={styles.label}>{label}</Table.Td>
-            <Table.Td>{value}</Table.Td>
-          </Table.Tr>
-        ))}
-      </Table.Tbody>
-    </Table>
-  )
-}
-
-type ContactLinkData = {
-  name?: string | null
-  phone?: string | null
-  email?: string | null
-}
-
-function ContactLinks({ contact }: { contact: ContactLinkData }) {
-  return (
-    <>
-      {contact.name ?? 'Контакт'}
-      {contact.phone && (
-        <>
-          {' · '}
-          <Anchor href={`tel:${normalizePhoneForHref(contact.phone)}`}>{contact.phone}</Anchor>
-        </>
-      )}
-      {contact.email && (
-        <>
-          {' · '}
-          <Anchor href={`mailto:${contact.email}`}>{contact.email}</Anchor>
-        </>
-      )}
-    </>
-  )
-}
 
 function BetsHistory({
   auctionUuid,
@@ -311,8 +249,8 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
         cols={{ base: 1, md: 2 }}
         spacing='lg'
       >
-        <DetailCard title='Основные данные'>
-          <DataTable
+        <AuctionDetailSection title='Основные данные'>
+          <AuctionDataTable
             rows={[
               ['Номер заказа', main.order_uid ?? '—'],
               ['Дата груза', formatDate(main.cargo_date)],
@@ -321,10 +259,10 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
               ['Окончание торгов', formatDate(trading.stop_time)],
             ]}
           />
-        </DetailCard>
+        </AuctionDetailSection>
 
-        <DetailCard title='Организатор'>
-          <DataTable
+        <AuctionDetailSection title='Организатор'>
+          <AuctionDataTable
             rows={[
               ['Организация', organizer.organization_name ?? '—'],
               ['ИНН', organizer.organization_inn ?? '—'],
@@ -348,16 +286,16 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
                     key={`${contact.uid ?? contact.phone ?? 'contact'}-${index}`}
                     size='sm'
                   >
-                    <ContactLinks contact={contact} />
+                    <AuctionContactLinks contact={contact} />
                   </Text>
                 ))}
               </Stack>
             </>
           )}
-        </DetailCard>
+        </AuctionDetailSection>
       </SimpleGrid>
 
-      <DetailCard title='Маршрут'>
+      <AuctionDetailSection title='Маршрут'>
         <Stack gap='md'>
           {auction.routes.map((point, index) => (
             <div
@@ -414,7 +352,7 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
                   {point.contact ? (
                     <>
                       {'Контакт: '}
-                      <ContactLinks contact={point.contact} />
+                      <AuctionContactLinks contact={point.contact} />
                     </>
                   ) : (
                     'Контакты не указаны'
@@ -424,14 +362,14 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
             </div>
           ))}
         </Stack>
-      </DetailCard>
+      </AuctionDetailSection>
 
       <SimpleGrid
         cols={{ base: 1, md: 2 }}
         spacing='lg'
       >
-        <DetailCard title='Груз'>
-          <DataTable
+        <AuctionDetailSection title='Груз'>
+          <AuctionDataTable
             rows={[
               ['Стоимость груза', hideCargoPrice ? 'Скрыта организатором' : (cargo.price ?? '—')],
               ['Расстояние', formatNumber(cargo.distance, ' км')],
@@ -450,10 +388,10 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
               ['Объём ТС', formatNumber(cargo.car?.volume, ' м³')],
             ]}
           />
-        </DetailCard>
+        </AuctionDetailSection>
 
-        <DetailCard title='Оплата'>
-          <DataTable
+        <AuctionDetailSection title='Оплата'>
+          <AuctionDataTable
             rows={[
               ['Форма', payment.form ?? '—'],
               ['Условие', payment.condition ?? payment.condition_predefined ?? '—'],
@@ -467,11 +405,11 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
               ['Валюта', payment.currency_code ?? '—'],
             ]}
           />
-        </DetailCard>
+        </AuctionDetailSection>
       </SimpleGrid>
 
-      <DetailCard title='Параметры торгов'>
-        <DataTable
+      <AuctionDetailSection title='Параметры торгов'>
+        <AuctionDataTable
           rows={[
             ['Начальная цена', formatPrice(trading.price?.start)],
             ['Текущая цена', formatPrice(trading.price?.current)],
@@ -497,7 +435,7 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
           hidden={hideBetsHistory}
           hidePlaces={trading.hide_places === true}
         />
-      </DetailCard>
+      </AuctionDetailSection>
     </Stack>
   )
 }
