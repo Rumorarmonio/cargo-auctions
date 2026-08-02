@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Checkbox, Group, NumberInput, Select, TextInput } from '@mantine/core'
 import { DateInput } from '@mantine/dates'
 import type { AuctionListFilters } from '../model/types'
@@ -30,6 +30,22 @@ const dropdownTransition = {
 } as const
 const selectComboboxProps = { transitionProps: dropdownTransition }
 
+const emptyFilters: AuctionListFilters = {
+  cargo_num: '',
+  status: undefined,
+  statuses: [],
+  auc_type: undefined,
+  auc_types: [],
+  load_city: undefined,
+  unload_city: undefined,
+  load_date_from: '',
+  load_date_to: '',
+  is_available: false,
+  is_bidder: false,
+  current_price_from: undefined,
+  current_price_to: undefined,
+}
+
 export function AuctionFiltersForm({
   initialFilters,
   onApply,
@@ -43,23 +59,13 @@ export function AuctionFiltersForm({
 }) {
   const modalParams = params as { initialFilters?: AuctionListFilters; onApply?: typeof onApply }
   const [filters, setFilters] = useState(
-    initialFilters ??
-      modalParams.initialFilters ?? {
-        cargo_num: '',
-        status: undefined,
-        statuses: [],
-        auc_type: undefined,
-        auc_types: [],
-        load_city: undefined,
-        unload_city: undefined,
-        load_date_from: '',
-        load_date_to: '',
-        is_available: false,
-        is_bidder: false,
-        current_price_from: undefined,
-        current_price_to: undefined,
-      },
+    initialFilters ?? modalParams.initialFilters ?? emptyFilters,
   )
+
+  useEffect(() => {
+    setFilters(initialFilters ?? modalParams.initialFilters ?? emptyFilters)
+  }, [initialFilters, modalParams.initialFilters])
+
   const apply = onApply ?? modalParams.onApply
   const update = (next: Partial<AuctionListFilters>) =>
     setFilters((current) => ({ ...current, ...next }))
@@ -169,21 +175,7 @@ export function AuctionFiltersForm({
           type='button'
           variant='subtle'
           onClick={() => {
-            const resetFilters = {
-              cargo_num: '',
-              status: undefined,
-              statuses: [],
-              auc_type: undefined,
-              auc_types: [],
-              load_city: undefined,
-              unload_city: undefined,
-              load_date_from: '',
-              load_date_to: '',
-              is_available: false,
-              is_bidder: false,
-              current_price_from: undefined,
-              current_price_to: undefined,
-            } satisfies AuctionListFilters
+            const resetFilters = emptyFilters
             setFilters(resetFilters)
             apply?.(resetFilters)
           }}
