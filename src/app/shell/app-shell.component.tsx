@@ -56,12 +56,20 @@ export function AppShell({ children }: { children: ReactNode }) {
               >
                 Тестовый аукционный кабинет
               </Text>
-              <Tooltip label={computedColorScheme === 'light' ? 'Включить тёмную тему' : 'Включить светлую тему'}>
+              <Tooltip
+                label={
+                  computedColorScheme === 'light' ? 'Включить тёмную тему' : 'Включить светлую тему'
+                }
+              >
                 <ActionIcon
                   variant='default'
                   size='lg'
                   onClick={toggleColorScheme}
-                  aria-label={computedColorScheme === 'light' ? 'Включить тёмную тему' : 'Включить светлую тему'}
+                  aria-label={
+                    computedColorScheme === 'light'
+                      ? 'Включить тёмную тему'
+                      : 'Включить светлую тему'
+                  }
                   aria-pressed={computedColorScheme === 'dark'}
                 >
                   {computedColorScheme === 'light' ? '☾' : '☼'}

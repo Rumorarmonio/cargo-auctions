@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Button, Checkbox, Group, NumberInput, Select, TextInput } from '@mantine/core'
 import { DateInput } from '@mantine/dates'
 import type { AuctionListFilters } from '../model/types'
@@ -62,10 +62,6 @@ export function AuctionFiltersForm({
   const [filters, setFilters] = useState(
     initialFilters ?? modalParams.initialFilters ?? emptyFilters,
   )
-
-  useEffect(() => {
-    setFilters(initialFilters ?? modalParams.initialFilters ?? emptyFilters)
-  }, [initialFilters, modalParams.initialFilters])
 
   const apply = onApply ?? modalParams.onApply
   const update = (next: Partial<AuctionListFilters>) =>

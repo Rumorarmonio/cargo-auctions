@@ -48,9 +48,7 @@ export function AuctionCard({ auction, onIntent }: AuctionCardProps) {
             gap='xs'
             justify='flex-end'
           >
-            <Badge variant='light'>
-              {getAuctionLabel(auction.main?.auc_type)}
-            </Badge>
+            <Badge variant='light'>{getAuctionLabel(auction.main?.auc_type)}</Badge>
             <Badge
               color={trading?.status === 'Auction' ? 'green' : 'gray'}
               variant='light'

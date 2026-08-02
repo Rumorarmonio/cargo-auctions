@@ -2,113 +2,27 @@ import {
   Alert,
   Badge,
   Button,
-  Card,
   Container,
   Divider,
   Group,
   SimpleGrid,
   Stack,
-  Table,
   Text,
   Title,
 } from '@mantine/core'
 import { Link, useParams } from '@tanstack/react-router'
-import { useAuctionBetsQuery } from '@/entities/auction/api/use-auction-bets.query'
 import { useAuctionDetailQuery } from '@/entities/auction/api/use-auction-detail.query'
 import { getAuctionLabel } from '@/entities/auction/model/auction-labels'
-import { AuctionContactLinks } from '@/entities/auction/ui/auction-contact-links.component'
+import { AuctionBetsHistory } from '@/entities/auction/ui/auction-bets-history.component'
+import { AuctionCargoInfo } from '@/entities/auction/ui/auction-cargo-info.component'
 import { AuctionDataTable } from '@/entities/auction/ui/auction-data-table.component'
 import { AuctionDetailSection } from '@/entities/auction/ui/auction-detail-section.component'
-import type { AuctionShowResponse, BetItem } from '@/shared/api/generated/model'
+import { AuctionOrganizerInfo } from '@/entities/auction/ui/auction-organizer-info.component'
+import { AuctionPaymentInfo } from '@/entities/auction/ui/auction-payment-info.component'
+import { AuctionRoute } from '@/entities/auction/ui/auction-route.component'
+import { AuctionTradingSummary } from '@/entities/auction/ui/auction-trading-summary.component'
+import type { AuctionShowResponse } from '@/shared/api/generated/model'
 import { formatDate, formatNumber, formatPrice } from '@/shared/lib/formatters'
-import styles from './auction-detail-page.module.scss'
-
-function BetsHistory({
-  auctionUuid,
-  hidden,
-  hidePlaces,
-}: {
-  auctionUuid: string
-  hidden: boolean
-  hidePlaces: boolean
-}) {
-  const query = useAuctionBetsQuery(auctionUuid, !hidden)
-
-  if (hidden) {
-    return <Text c='dimmed'>История ставок скрыта организатором.</Text>
-  }
-
-  if (query.isPending) return <Text c='dimmed'>Загрузка истории ставок…</Text>
-
-  if (query.isError) {
-    return (
-      <Alert
-        color='red'
-        title='Не удалось загрузить историю ставок'
-      >
-        Попробуйте обновить страницу позже.
-      </Alert>
-    )
-  }
-
-  const bets = query.data?.bets ?? []
-  if (bets.length === 0) return <Text c='dimmed'>Ставок пока нет.</Text>
-
-  return (
-    <Table.ScrollContainer minWidth={760}>
-      <Table>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Дата</Table.Th>
-            <Table.Th>Цена с НДС</Table.Th>
-            <Table.Th>Цена без НДС</Table.Th>
-            <Table.Th>Перевозчик</Table.Th>
-            <Table.Th>Место</Table.Th>
-            <Table.Th>Результат</Table.Th>
-            <Table.Th>Отмена</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {bets.map((bet) => (
-            <BetRow
-              key={bet.id ?? `${bet.created_at}-${bet.organization_id}`}
-              bet={bet}
-              hidePlaces={hidePlaces}
-            />
-          ))}
-        </Table.Tbody>
-      </Table>
-    </Table.ScrollContainer>
-  )
-}
-
-function BetRow({ bet, hidePlaces }: { bet: BetItem; hidePlaces: boolean }) {
-  const priceWithVat = bet.price_info?.price_with_vat ?? bet.price_with_vat
-  const priceNoVat = bet.price_info?.price_no_vat ?? bet.price_no_vat
-  const isCanceled = Boolean(bet.cancel_reason) || bet.is_rejected === true
-
-  return (
-    <Table.Tr>
-      <Table.Td>{formatDate(bet.created_at, true)}</Table.Td>
-      <Table.Td>{formatPrice(priceWithVat)}</Table.Td>
-      <Table.Td>{formatPrice(priceNoVat)}</Table.Td>
-      <Table.Td>
-        <Text>{bet.organization_name || 'Перевозчик не указан'}</Text>
-        {bet.contact_name && (
-          <Text
-            size='xs'
-            c='dimmed'
-          >
-            {bet.contact_name}
-          </Text>
-        )}
-      </Table.Td>
-      <Table.Td>{hidePlaces ? '—' : (bet.place ?? '—')}</Table.Td>
-      <Table.Td>{bet.is_win ? 'Победитель' : '—'}</Table.Td>
-      <Table.Td>{isCanceled ? bet.cancel_reason || 'Отменена' : '—'}</Table.Td>
-    </Table.Tr>
-  )
-}
 
 export function AuctionDetailPage() {
   const { auctionUuid } = useParams({ from: '/auctions/$auctionUuid' })
@@ -144,9 +58,7 @@ export function AuctionDetailPage() {
 }
 
 function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
-  const { main, trading, cargo, payment, organizer } = auction
-  const canSetBet = trading.can_set_bet === true
-  const hasBet = trading.your?.bet === true
+  const { main, trading } = auction
   const hideCargoPrice = trading.no_view_cargo_price === true
   const hideBetsHistory = trading.hide_bets_history === true || auction.hide_bets_history === true
   const hidePointInfo = trading.hide_points_address_and_contacts === true
@@ -179,71 +91,11 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
         </Group>
       </Group>
 
-      <Card
-        withBorder
-        padding='lg'
-        className={styles.tradingSummary}
-      >
-        <Group
-          justify='space-between'
-          align='center'
-          gap='md'
-        >
-          <div>
-            <Text
-              size='sm'
-              c='dimmed'
-            >
-              Текущая цена
-            </Text>
-            {hideCargoPrice ? (
-              <Text
-                size='xl'
-                fw={700}
-              >
-                Цена скрыта организатором
-              </Text>
-            ) : (
-              <Text
-                size='xl'
-                fw={700}
-              >
-                {formatPrice(trading.price?.current)}
-              </Text>
-            )}
-            <Text
-              size='sm'
-              c='dimmed'
-            >
-              {getAuctionLabel(trading.bid_measurement_type)}
-            </Text>
-          </div>
-          {canSetBet && main.order_uid ? (
-            <Button
-              component={Link}
-              to={`/auctions/${main.order_uid}/bet`}
-            >
-              {hasBet ? 'Изменить ставку' : 'Сделать ставку'}
-            </Button>
-          ) : (
-            <Button
-              disabled
-              variant='light'
-            >
-              Ставка недоступна
-            </Button>
-          )}
-        </Group>
-        {!canSetBet && (
-          <Text
-            size='sm'
-            c='dimmed'
-            mt='sm'
-          >
-            Сейчас для вашей организации нельзя сделать ставку.
-          </Text>
-        )}
-      </Card>
+      <AuctionTradingSummary
+        main={main}
+        trading={trading}
+        hideCargoPrice={hideCargoPrice}
+      />
 
       <SimpleGrid
         cols={{ base: 1, md: 2 }}
@@ -260,152 +112,26 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
             ]}
           />
         </AuctionDetailSection>
-
-        <AuctionDetailSection title='Организатор'>
-          <AuctionDataTable
-            rows={[
-              ['Организация', organizer.organization_name ?? '—'],
-              ['ИНН', organizer.organization_inn ?? '—'],
-              ['КПП', organizer.organization_kpp ?? '—'],
-              ['Код организации', organizer.infobase_code ?? organizer.subscriber_code ?? '—'],
-            ]}
-          />
-          {auction.contacts.length > 0 && (
-            <>
-              <Divider my='md' />
-              <Text
-                size='sm'
-                fw={600}
-                mb='xs'
-              >
-                Контакты
-              </Text>
-              <Stack gap='xs'>
-                {auction.contacts.map((contact, index) => (
-                  <Text
-                    key={`${contact.uid ?? contact.phone ?? 'contact'}-${index}`}
-                    size='sm'
-                  >
-                    <AuctionContactLinks contact={contact} />
-                  </Text>
-                ))}
-              </Stack>
-            </>
-          )}
-        </AuctionDetailSection>
+        <AuctionOrganizerInfo
+          organizer={auction.organizer}
+          contacts={auction.contacts}
+        />
       </SimpleGrid>
 
-      <AuctionDetailSection title='Маршрут'>
-        <Stack gap='md'>
-          {auction.routes.map((point, index) => (
-            <div
-              key={`${point.row_num ?? index}-${point.location?.city_name ?? 'point'}`}
-              className={styles.routePoint}
-            >
-              <Group
-                justify='space-between'
-                align='flex-start'
-                gap='md'
-              >
-                <div>
-                  <Badge variant='light'>{getAuctionLabel(point.op_type)}</Badge>
-                  <Text
-                    fw={600}
-                    mt='xs'
-                  >
-                    {point.location?.city_full_name ??
-                      point.location?.city_name ??
-                      'Место не указано'}
-                  </Text>
-                  <Text
-                    size='sm'
-                    c='dimmed'
-                  >
-                    {hidePointInfo
-                      ? 'Адрес скрыт'
-                      : (point.location?.loading_address ?? 'Адрес не указан')}
-                  </Text>
-                </div>
-                <Text
-                  size='sm'
-                  c='dimmed'
-                  ta='right'
-                >
-                  {formatDate(point.start_date)}
-                  <br />
-                  до {formatDate(point.end_date)}
-                </Text>
-              </Group>
-              {hidePointInfo ? (
-                <Text
-                  size='sm'
-                  mt='xs'
-                  c='dimmed'
-                >
-                  Контакты скрыты
-                </Text>
-              ) : (
-                <Text
-                  size='sm'
-                  mt='xs'
-                >
-                  {point.contact ? (
-                    <>
-                      {'Контакт: '}
-                      <AuctionContactLinks contact={point.contact} />
-                    </>
-                  ) : (
-                    'Контакты не указаны'
-                  )}
-                </Text>
-              )}
-            </div>
-          ))}
-        </Stack>
-      </AuctionDetailSection>
+      <AuctionRoute
+        routes={auction.routes}
+        hidePointInfo={hidePointInfo}
+      />
 
       <SimpleGrid
         cols={{ base: 1, md: 2 }}
         spacing='lg'
       >
-        <AuctionDetailSection title='Груз'>
-          <AuctionDataTable
-            rows={[
-              ['Стоимость груза', hideCargoPrice ? 'Скрыта организатором' : (cargo.price ?? '—')],
-              ['Расстояние', formatNumber(cargo.distance, ' км')],
-              ['Количество машин', cargo.truck_count ?? '—'],
-              ['Тип кузова', cargo.body_type ?? '—'],
-              [
-                'Температура',
-                cargo.temp_from !== null || cargo.temp_to !== null
-                  ? `${cargo.temp_from ?? '—'}…${cargo.temp_to ?? '—'} °C`
-                  : '—',
-              ],
-              ['Ремни', formatNumber(cargo.belts)],
-              ['Крепления', formatNumber(cargo.conics)],
-              ['Тип требуемого ТС', cargo.car?.type ?? '—'],
-              ['Грузоподъёмность ТС', formatNumber(cargo.car?.weight, ' т')],
-              ['Объём ТС', formatNumber(cargo.car?.volume, ' м³')],
-            ]}
-          />
-        </AuctionDetailSection>
-
-        <AuctionDetailSection title='Оплата'>
-          <AuctionDataTable
-            rows={[
-              ['Форма', payment.form ?? '—'],
-              ['Условие', payment.condition ?? payment.condition_predefined ?? '—'],
-              [
-                'Отсрочка',
-                payment.delay === null || payment.delay === undefined
-                  ? '—'
-                  : `${payment.delay} ${getAuctionLabel(payment.delay_type)}`,
-              ],
-              ['Предоплата', payment.prepay ?? '—'],
-              ['Валюта', payment.currency_code ?? '—'],
-            ]}
-          />
-        </AuctionDetailSection>
+        <AuctionCargoInfo
+          cargo={auction.cargo}
+          hideCargoPrice={hideCargoPrice}
+        />
+        <AuctionPaymentInfo payment={auction.payment} />
       </SimpleGrid>
 
       <AuctionDetailSection title='Параметры торгов'>
@@ -430,7 +156,7 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
         >
           История ставок
         </Text>
-        <BetsHistory
+        <AuctionBetsHistory
           auctionUuid={main.order_uid ?? ''}
           hidden={hideBetsHistory}
           hidePlaces={trading.hide_places === true}

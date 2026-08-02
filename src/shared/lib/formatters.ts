@@ -12,13 +12,9 @@ export function formatDate(value?: string | null, includeTime = false) {
 }
 
 export function formatNumber(value?: number | null, suffix = '') {
-  return value === undefined || value === null
-    ? '—'
-    : `${numberFormatter.format(value)}${suffix}`
+  return value === undefined || value === null ? '—' : `${numberFormatter.format(value)}${suffix}`
 }
 
 export function formatPrice(value?: number | null, emptyLabel = '—') {
-  return value === undefined || value === null
-    ? emptyLabel
-    : `${priceFormatter.format(value)} ₽`
+  return value === undefined || value === null ? emptyLabel : `${priceFormatter.format(value)} ₽`
 }

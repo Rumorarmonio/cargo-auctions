@@ -55,6 +55,7 @@ export function ModalsHost() {
         const Content = contentById[definition.id]
         const content = (
           <Content
+            key={`${definition.id}-${JSON.stringify(state?.params ?? null)}`}
             modalId={definition.id as ModalId}
             params={state?.params}
           />
