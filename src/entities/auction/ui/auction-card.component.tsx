@@ -1,27 +1,9 @@
 import { Badge, Button, Card, Group, Stack, Text } from '@mantine/core'
 import { Link } from '@tanstack/react-router'
+import { getAuctionLabel } from '@/entities/auction/model/auction-labels'
 import type { AuctionListItem } from '@/shared/api/generated/model'
+import { formatDate, formatPrice } from '@/shared/lib/formatters'
 import styles from './auction-card.module.scss'
-
-const labels: Record<string, string> = {
-  Request: 'Заявка',
-  Up: 'Повышение',
-  Down: 'Понижение',
-  FixPrice: 'Фиксированная цена',
-  Planning: 'Планирование',
-  Auction: 'Идут торги',
-  Finished: 'Завершён',
-  Leading: 'Вы лидируете',
-  Losing: 'Ваша ставка перебита',
-  Winner: 'Вы победили',
-  NotParticipating: 'Не участвуете',
-}
-
-const formatDate = (value?: string) =>
-  value ? new Intl.DateTimeFormat('ru-RU', { dateStyle: 'medium' }).format(new Date(value)) : '—'
-
-const formatPrice = (value?: number) =>
-  value === undefined ? 'Цена скрыта' : `${new Intl.NumberFormat('ru-RU').format(value)} ₽`
 
 type AuctionCardProps = {
   auction: AuctionListItem
@@ -67,13 +49,13 @@ export function AuctionCard({ auction, onIntent }: AuctionCardProps) {
             justify='flex-end'
           >
             <Badge variant='light'>
-              {labels[auction.main?.auc_type ?? ''] ?? auction.main?.auc_type}
+              {getAuctionLabel(auction.main?.auc_type)}
             </Badge>
             <Badge
               color={trading?.status === 'Auction' ? 'green' : 'gray'}
               variant='light'
             >
-              {labels[trading?.status ?? ''] ?? trading?.status ?? 'Статус неизвестен'}
+              {trading?.status ? getAuctionLabel(trading.status) : 'Статус неизвестен'}
             </Badge>
           </Group>
         </Group>
@@ -164,14 +146,14 @@ export function AuctionCard({ auction, onIntent }: AuctionCardProps) {
               size='xl'
               fw={700}
             >
-              {formatPrice(trading?.price?.current)}
+              {formatPrice(trading?.price?.current, 'Цена скрыта')}
             </Text>
             {auction.main?.price_per_km && (
               <Text
                 size='xs'
                 c='dimmed'
               >
-                {formatPrice(auction.main.price_per_km)} / км
+                {formatPrice(auction.main.price_per_km, 'Цена скрыта')} / км
               </Text>
             )}
           </div>
@@ -184,7 +166,7 @@ export function AuctionCard({ auction, onIntent }: AuctionCardProps) {
                 size='sm'
                 c='blue'
               >
-                {labels[trading.status_mobile] ?? trading.status_mobile}
+                {getAuctionLabel(trading.status_mobile)}
               </Text>
             )}
             <Button

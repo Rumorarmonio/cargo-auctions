@@ -16,53 +16,11 @@ import {
 import { Link, useParams } from '@tanstack/react-router'
 import { useAuctionBetsQuery } from '@/entities/auction/api/use-auction-bets.query'
 import { useAuctionDetailQuery } from '@/entities/auction/api/use-auction-detail.query'
+import { getAuctionLabel } from '@/entities/auction/model/auction-labels'
 import type { AuctionShowResponse, BetItem } from '@/shared/api/generated/model'
 import { normalizePhoneForHref } from '@/shared/forms/phone'
+import { formatDate, formatNumber, formatPrice } from '@/shared/lib/formatters'
 import styles from './auction-detail-page.module.scss'
-
-const labels: Record<string, string> = {
-  Request: 'Заявка',
-  Up: 'Повышение',
-  Down: 'Понижение',
-  FixPrice: 'Фиксированная цена',
-  Planning: 'Планирование',
-  Auction: 'Идут торги',
-  DeterminateWinner: 'Определение победителя',
-  WaitDeal: 'Ожидание сделки',
-  InProgress: 'В работе',
-  Finished: 'Завершён',
-  Stopped: 'Остановлен',
-  Canceled: 'Отменён',
-  PerRoute: 'За рейс',
-  PerKm: 'За километр',
-  CalendarDays: 'календарных дней',
-  WorkDays: 'рабочих дней',
-  Leading: 'Вы лидируете',
-  Losing: 'Ваша ставка перебита',
-  Winner: 'Вы победили',
-  NotParticipating: 'Не участвуете',
-  Confirmed: 'Подтверждена',
-}
-
-const formatDate = (value?: string | null) =>
-  value
-    ? new Intl.DateTimeFormat('ru-RU', {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-      }).format(new Date(value))
-    : '—'
-
-const formatNumber = (value?: number | null, suffix = '') =>
-  value === undefined || value === null
-    ? '—'
-    : `${new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(value)}${suffix}`
-
-const formatPrice = (value?: number | null) =>
-  value === undefined || value === null
-    ? '—'
-    : `${new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(value)} ₽`
-
-const getLabel = (value?: string | null) => (value ? (labels[value] ?? value) : '—')
 
 function DetailCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -193,7 +151,7 @@ function BetRow({ bet, hidePlaces }: { bet: BetItem; hidePlaces: boolean }) {
 
   return (
     <Table.Tr>
-      <Table.Td>{formatDate(bet.created_at)}</Table.Td>
+      <Table.Td>{formatDate(bet.created_at, true)}</Table.Td>
       <Table.Td>{formatPrice(priceWithVat)}</Table.Td>
       <Table.Td>{formatPrice(priceNoVat)}</Table.Td>
       <Table.Td>
@@ -273,12 +231,12 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
           <Text c='dimmed'>Создан {formatDate(main.created_at)}</Text>
         </div>
         <Group gap='xs'>
-          <Badge variant='light'>{getLabel(main.auc_type)}</Badge>
+          <Badge variant='light'>{getAuctionLabel(main.auc_type)}</Badge>
           <Badge
             color={trading.status === 'Auction' ? 'green' : 'gray'}
             variant='light'
           >
-            {getLabel(trading.status)}
+            {getAuctionLabel(trading.status)}
           </Badge>
         </Group>
       </Group>
@@ -319,7 +277,7 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
               size='sm'
               c='dimmed'
             >
-              {getLabel(trading.bid_measurement_type)}
+              {getAuctionLabel(trading.bid_measurement_type)}
             </Text>
           </div>
           {canSetBet && main.order_uid ? (
@@ -358,7 +316,7 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
             rows={[
               ['Номер заказа', main.order_uid ?? '—'],
               ['Дата груза', formatDate(main.cargo_date)],
-              ['Тип аукциона', getLabel(main.auc_type)],
+              ['Тип аукциона', getAuctionLabel(main.auc_type)],
               ['Старт торгов', formatDate(trading.start_time)],
               ['Окончание торгов', formatDate(trading.stop_time)],
             ]}
@@ -412,7 +370,7 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
                 gap='md'
               >
                 <div>
-                  <Badge variant='light'>{getLabel(point.op_type)}</Badge>
+                  <Badge variant='light'>{getAuctionLabel(point.op_type)}</Badge>
                   <Text
                     fw={600}
                     mt='xs'
@@ -503,7 +461,7 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
                 'Отсрочка',
                 payment.delay === null || payment.delay === undefined
                   ? '—'
-                  : `${payment.delay} ${getLabel(payment.delay_type)}`,
+                  : `${payment.delay} ${getAuctionLabel(payment.delay_type)}`,
               ],
               ['Предоплата', payment.prepay ?? '—'],
               ['Валюта', payment.currency_code ?? '—'],
@@ -523,7 +481,7 @@ function AuctionDetailContent({ auction }: { auction: AuctionShowResponse }) {
             ['Продление после ставки', formatNumber(trading.settings?.prolong_after_bet, ' мин')],
             ['Передача груза', formatNumber(trading.settings?.transmission_time_in, ' ч')],
             ['Встречные ставки', trading.allow_counter_bets ? 'Разрешены' : 'Запрещены'],
-            ['Статус своей ставки', getLabel(trading.status_mobile)],
+            ['Статус своей ставки', getAuctionLabel(trading.status_mobile)],
             ['Последняя ставка', formatPrice(trading.your?.last_bet)],
           ]}
         />

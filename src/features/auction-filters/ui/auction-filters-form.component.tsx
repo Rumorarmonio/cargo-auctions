@@ -57,7 +57,8 @@ export function AuctionFiltersForm({
   modalId?: string
   params?: unknown
 }) {
-  const modalParams = params as { initialFilters?: AuctionListFilters; onApply?: typeof onApply }
+  const modalParams =
+    (params as { initialFilters?: AuctionListFilters; onApply?: typeof onApply } | undefined) ?? {}
   const [filters, setFilters] = useState(
     initialFilters ?? modalParams.initialFilters ?? emptyFilters,
   )
