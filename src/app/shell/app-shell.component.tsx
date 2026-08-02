@@ -1,5 +1,15 @@
 import type { ReactNode } from 'react'
-import { AppShell as MantineAppShell, Container, Group, Text, Title } from '@mantine/core'
+import {
+  ActionIcon,
+  AppShell as MantineAppShell,
+  Container,
+  Group,
+  Text,
+  Title,
+  Tooltip,
+  useComputedColorScheme,
+  useMantineColorScheme,
+} from '@mantine/core'
 import { Link, useLocation } from '@tanstack/react-router'
 import styles from './app-shell.module.scss'
 import { ModalDemoButtons } from '@/widgets/modal-demo/ui/modal-demo-buttons.component'
@@ -7,6 +17,12 @@ import { ModalsHost } from '@/app/modals/modals-host.component'
 
 export function AppShell({ children }: { children: ReactNode }) {
   const location = useLocation()
+  const { setColorScheme } = useMantineColorScheme()
+  const computedColorScheme = useComputedColorScheme('light')
+
+  const toggleColorScheme = () => {
+    setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')
+  }
 
   return (
     <MantineAppShell header={{ height: 64 }}>
@@ -15,7 +31,10 @@ export function AppShell({ children }: { children: ReactNode }) {
           size='xl'
           className={styles.header}
         >
-          <Group justify='space-between'>
+          <Group
+            justify='space-between'
+            w='100%'
+          >
             <Title
               order={3}
               c='inherit'
@@ -29,12 +48,26 @@ export function AppShell({ children }: { children: ReactNode }) {
             >
               Cargo Auctions
             </Title>
-            <Text
-              c='dimmed'
-              size='sm'
-            >
-              Тестовый аукционный кабинет
-            </Text>
+            <Group gap='sm'>
+              <Text
+                c='dimmed'
+                size='sm'
+                className={styles.subtitle}
+              >
+                Тестовый аукционный кабинет
+              </Text>
+              <Tooltip label={computedColorScheme === 'light' ? 'Включить тёмную тему' : 'Включить светлую тему'}>
+                <ActionIcon
+                  variant='default'
+                  size='lg'
+                  onClick={toggleColorScheme}
+                  aria-label={computedColorScheme === 'light' ? 'Включить тёмную тему' : 'Включить светлую тему'}
+                  aria-pressed={computedColorScheme === 'dark'}
+                >
+                  {computedColorScheme === 'light' ? '☾' : '☼'}
+                </ActionIcon>
+              </Tooltip>
+            </Group>
           </Group>
         </Container>
         {/*<ModalDemoButtons />*/}

@@ -10,6 +10,12 @@
   height: 100%;
 }
 
+@include mobile-767 {
+  .subtitle {
+    display: none;
+  }
+}
+
 .main {
   padding-top: 0 !important;
   min-height: calc(100dvh - var(--app-shell-header-height, 4rem)) !important;

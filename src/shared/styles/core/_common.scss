@@ -13,16 +13,16 @@ html {
 }
 
 :root {
-  color: $black;
-  background: $color-background;
+  color: var(--mantine-color-text);
+  background: var(--mantine-color-body);
 }
 
 body {
   min-width: 320px;
   margin: 0;
   font-family: $font-base;
-  color: $black;
-  background: $color-background;
+  color: var(--mantine-color-text);
+  background: var(--mantine-color-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
